@@ -12,3 +12,11 @@ function GetNodes(){
 		}
 	});
 }
+
+function table(nodes){
+	var tr;
+	$.each(nodes, function (nr, node){
+		tr = "<td>"+node+"<td>";
+		$('#nodes').append(tr);
+	});
+}
