@@ -3,20 +3,26 @@ $(document).ready(function (){
 	GetNodes();
 });
 
+
+var razor = {
+	nodes : function (nodes){
+		var tr;
+		$.each(nodes, function (nr, node){
+			tr = "<td>"+node+"<td>";
+			$('#nodes').append(tr);
+		});
+	}
+}
+
+
+
 function GetNodes(){
 	$.ajax({
 		url : config.server + '/collections/nodes',
 		dataType:'json',
 		success: function (d){
-			console.log(d);
+			razor.nodes(d.items);
 		}
 	});
 }
 
-function table(nodes){
-	var tr;
-	$.each(nodes, function (nr, node){
-		tr = "<td>"+node+"<td>";
-		$('#nodes').append(tr);
-	});
-}
