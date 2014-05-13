@@ -8,7 +8,7 @@ var razor = {
 	nodes : function (nodes){
 		var tr;
 		$.each(nodes, function (nr, node){
-			tr = "<td>"+node+"<td>";
+			tr = "<td>"+node.name+"<td>";
 			$('#nodes').append(tr);
 		});
 	}
