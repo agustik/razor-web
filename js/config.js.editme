@@ -1,0 +1,4 @@
+var config = {
+	server : 'yourrazorserver.example.com',
+	port : 8080
+}
