@@ -9,7 +9,6 @@ var razor = {
 		if (callback == false){
 			async = false;
 		}
-		console.log(async);
 		$.ajax({
 			url : config.server + api,
 			dataType:'json',
@@ -29,11 +28,13 @@ var razor = {
 
 
 	},
-	post : function (api, callback){
+	post : function (api,json, callback){
 		$.ajax({
 			url : config.server + api,
 			type : 'POST',
 			dataType:'json',
+			contentType : 'application/json',
+			data : JSON.stringify(json),
 			complete : function (a,b){
 				console.log(a,b);
 			}
@@ -68,7 +69,7 @@ var razor = {
 		},
 		reinstall : function (node, callback){
 			console.log('reinstall');
-			razor.post('/commands/reinstall-node', function (a){
+			razor.post('/commands/reinstall-node', {name:node}, function (a){
 				callback(a);
 			});
 		},
