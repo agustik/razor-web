@@ -36,7 +36,8 @@ var razor = {
 			contentType : 'application/json',
 			data : JSON.stringify(json),
 			complete : function (a,b){
-				console.log(a,b);
+				callback(a,b);
+
 			}
 		})
 	},
@@ -63,21 +64,21 @@ var razor = {
 		},
 		delete : function (node, callback){
 			console.log('delete');
-			// razor.post('/commands/delete-node', function (a){
-			// 	callback(a);
-			// });
+			razor.post('/commands/delete-node', function (a,b){
+				callback(a,b);
+			});
 		},
 		reinstall : function (node, callback){
 			console.log('reinstall');
-			razor.post('/commands/reinstall-node', {name:node}, function (a){
-				callback(a);
+			razor.post('/commands/reinstall-node', {name:node}, function (a,b){
+				callback(a,b);
 			});
 		},
 		reboot : function (node, callback){
 			console.log('reboot');
-			// razor.post('/commands/delete-node', function (a){
-			// 	callback(a);
-			// });
+			razor.post('/commands/delete-node', function (a,b){
+				callback(a,b);
+			});
 		}
 	}
 	
@@ -143,7 +144,12 @@ $(document).ready(function (){
 				tr +="<td>"+tools.size(d.facts.memorysize_mb*1024*1024)+"</td>";
 				tr +="<td>"+tools.size(d.facts.blockdevice_sda_size)+"</td>";
 				tr +="<td>"+d.last_checkin+"</td>";
-				tr +="<td>"+tools.status(d.state.stage)+"</td>";
+				if('state' in d){
+					tr +="<td>"+tools.status(d.state.stage)+"</td>";
+				}else{
+					console.log(d);
+					tr +="<td>"+tools.status('')+"</td>";
+				}
 				tr +="<td>";
 				$.each(d.tags, function (i, tag){
 					tr +="<a href='#' tag-id='"+tag.id+"' class='label label-info'>"+tag.name+"</a>";
@@ -183,7 +189,7 @@ $(document).on('click', 'a[data-target="#log_modal"]', function (){
 	var tr, td, element = $(this),
 		node = element.data('node');
 		$('#log_modal .modal-title').text('Logs for: '+node);
-		razor.log(node, function (log){
+		razor.node.log(node, function (log){
 			$.each(log.items, function (i, entry){
 				tr = "<tr>";
 				
