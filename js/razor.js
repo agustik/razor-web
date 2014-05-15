@@ -57,7 +57,7 @@ var razor = {
 				
 		},
 		log : function (node, callback){
-			this.get('/collections/nodes/'+node+'/log', function (d){
+			razor.get('/collections/nodes/'+node+'/log', function (d){
 				callback(d);
 			});
 
