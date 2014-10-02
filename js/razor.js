@@ -26,7 +26,6 @@ var razor = {
 			return x;
 		}
 
-
 	},
 	post : function (api,json, callback){
 		$.ajax({
