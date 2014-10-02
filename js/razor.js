@@ -138,11 +138,21 @@ $(document).ready(function (){
 			var tr = "<tr data-json='"+JSON.stringify(d)+"' >";
 				tr +="<td>"+d.name+"</td>";
 				tr +="<td>"+d.hostname+"</td>";
-				tr +="<td>"+d.facts.macaddress+"</td>";
-				tr +="<td>"+d.facts.physicalprocessorcount+"</td>";
-				tr +="<td>"+tools.size(d.facts.memorysize_mb*1024*1024)+"</td>";
-				tr +="<td>"+tools.size(d.facts.blockdevice_sda_size)+"</td>";
-				tr +="<td>"+d.last_checkin+"</td>";
+				if (facts in d){
+					tr +="<td>"+d.facts.macaddress+"</td>";
+					tr +="<td>"+d.facts.physicalprocessorcount+"</td>";
+					tr +="<td>"+tools.size(d.facts.memorysize_mb*1024*1024)+"</td>";
+					tr +="<td>"+tools.size(d.facts.blockdevice_sda_size)+"</td>";
+				}else{
+					tr += "<td></td><td></td><td></td><td></td>";
+				}
+				
+				if(last_checkin in d){
+					tr +="<td>"+d.last_checkin+"</td>";
+				}else{
+					tr +="<td></td>";
+				}
+				
 				if('state' in d){
 					tr +="<td>"+tools.status(d.state.stage)+"</td>";
 				}else{
