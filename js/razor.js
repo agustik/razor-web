@@ -138,7 +138,7 @@ $(document).ready(function (){
 			var tr = "<tr data-json='"+JSON.stringify(d)+"' >";
 				tr +="<td>"+d.name+"</td>";
 				tr +="<td>"+d.hostname+"</td>";
-				if (facts in d){
+				if ("facts" in d){
 					tr +="<td>"+d.facts.macaddress+"</td>";
 					tr +="<td>"+d.facts.physicalprocessorcount+"</td>";
 					tr +="<td>"+tools.size(d.facts.memorysize_mb*1024*1024)+"</td>";
@@ -147,7 +147,7 @@ $(document).ready(function (){
 					tr += "<td></td><td></td><td></td><td></td>";
 				}
 				
-				if(last_checkin in d){
+				if("last_checkin" in d){
 					tr +="<td>"+d.last_checkin+"</td>";
 				}else{
 					tr +="<td></td>";
