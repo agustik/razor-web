@@ -274,7 +274,7 @@ var razor = {
 			async = false;
 		}
 
-		callback(api);
+		//callback(api);
 
 		$.ajax({
 			url : config.server + api,
@@ -359,6 +359,7 @@ $(document).on('click', '[data-collection]', function (e) {
 
 	$('#api_used').text(text);
     razor.get('/collections/'+api, function (d){
+
     	if('items' in d){
     		$.each(d.items, function (key, value){
     			razor.get('/collections/'+api+'/'+value.name, function (d){
