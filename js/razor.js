@@ -242,26 +242,26 @@
 
 
 ///-- NEW CODE -- //
-var config = {
-	server : 'http://localhost',
-	tables : {
-		main :{
-			thead : '#table_1 thead',
-			tbody : '#table_1 tbody'
-		},
-		modal : {
-			thead : '#modal_table thead',
-			tbody : '#modal_table tbody'
-		},
-		format : {
-			nodes : {
-	            node : function (d) { 
-	                return '<a href="#" class="btn">'+d.node+'</a>';
-	            }
-	        }
-		}
-	}
-}
+// var config = {
+// 	server : 'http://localhost',
+// 	tables : {
+// 		main :{
+// 			thead : '#table_1 thead',
+// 			tbody : '#table_1 tbody'
+// 		},
+// 		modal : {
+// 			thead : '#modal_table thead',
+// 			tbody : '#modal_table tbody'
+// 		},
+// 		format : {
+// 			nodes : {
+// 	            node : function (d) { 
+// 	                return '<a href="#" class="btn">'+d.node+'</a>';
+// 	            }
+// 	        }
+// 		}
+// 	}
+// }
 
 
 var razor = {
