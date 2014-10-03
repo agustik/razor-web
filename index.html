@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Start Bootstrap - SB Admin Version 2.0 Demo</title>
+    <title>Razor Web</title>
 
     <!-- Core CSS - Include with every page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,58 +45,49 @@
               <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-cloud"></i> Nodes</a>
+              <a href="#" data-collection="nodes"><i class="fa fa-cloud"></i> Nodes</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-tags"></i> Tags</a>
+              <a href="#" data-collection="tags"><i class="fa fa-tags"></i> Tags</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-folder-open"></i> Repos</a>
+              <a href="#" data-collection="repos"><i class="fa fa-folder-open" ></i> Repos</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-paperclip"></i> Policies</a>
+              <a href="#" data-collection="policies"><i class="fa fa-paperclip"></i> Policies</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-tasks"></i> Tasks</a>
+              <a href="#" data-collection="tasks"><i class="fa fa-tasks"></i> Tasks</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-random"></i> Brokers</a>
+              <a href="#" data-collection="brokers"><i class="fa fa-random"></i> Brokers</a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <div class="container">
-
-
-
+    <div class="container-fluid">
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Nodes</h1>
+                    <h1 class="page-header" id="api_used"></h1>
                 </div>
             </div>
             <div class="row">
-                <table class="table table-hover  main-list" id="nodes">
+                <div class="col-lg-6">
+                <table class="table table-hover  main-list" id="table_1">
                     <thead>
-                        <tr>
-                            <th>Node</th>
-                            <th>Hostname</th>
-                            <th>Mac</th>
-                            <th>CPU</th>
-                            <th>RAM</th>
-                            <th>Disk</th>
-                            <th>Last seen</th>
-                            <th>Status</th>
-                            <th>Tags</th>
-                            <th>Other</th>
-                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div>
-           
+            <div class="col-lg-6">
+                <div id="details">
+                    ....
+                </div>
+            </div>
+           </div>
         </div>
         <!-- /#page-wrapper -->
 
@@ -112,17 +103,8 @@
               <div class="modal-body">
 
                     <div class="panel-body">
-                      <table class="table" id="log-table">
+                      <table class="table" id="modal_table">
                         <thead>
-                            <tr>
-                                <th>Event</th>
-                                <th>Severity</th>
-                                <th>Timestamp</th>
-                                <th>Template</th>
-                                <th>Repo</th>
-                                <th>Task</th>
-                                <th>Other</th>
-                            </tr>
                         </thead>
                         <tbody>
                         </tbody>
@@ -137,7 +119,7 @@
       </div>
     </div>
     <!-- /#wrapper -->
-    <nav class="navbar navbar-default navbar-fixed-bottom action-nav" role="navigation">
+    <!-- <nav class="navbar navbar-default navbar-fixed-bottom action-nav" role="navigation">
       <div class="container">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
@@ -148,21 +130,22 @@
             <li><a class="" href="#" data-action="edit" data-toggle="tooltip" title="Edit" data-placement="top"><i class="fa fa-edit col-lg-1"></i></a></li>
             <!-- 
             <li><a class="navbar-brand" href="#" data-toggle="tooltip" title="Reboot" data-placement="top"><i class="fa fa-power-off col-lg-1"></i></a></li>
-            <li><a class="navbar-brand" href="#" data-toggle="tooltip" title="Reboot" data-placement="top"><i class="fa fa-power-off col-lg-1"></i></a></li> -->
+            <li><a class="navbar-brand" href="#" data-toggle="tooltip" title="Reboot" data-placement="top"><i class="fa fa-power-off col-lg-1"></i></a></li> --
           </ul>
         </div>
       </div>
-    </nav>
+    </nav> -->
 
     <!-- Core Scripts - Include with every page -->
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/config.js"></script>
+    <!--<script src="js/config.js"></script>-->
     <script src="js/razor.js"></script>
     <script type="text/javascript">
         $(document).tooltip({
             selector : '[data-toggle="tooltip"]'
         });
+        
     </script>
 
 
