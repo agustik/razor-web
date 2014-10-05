@@ -16,6 +16,7 @@
 		<th>Tags</th>
 		<th>Virtual</th>
 		<th>Checkin</th>
+		<th>Logs</th>
 		<th></th>
 	</thead>
 	<tbody>
@@ -28,9 +29,10 @@
 			<td>{{ node.facts.macaddress }} </td>
 			<td>{{ node.facts.ipaddress }} </td>
 			<td>{{ node.state.installed }} </td>
-			<td><span class="label label-primary" data-ng-repeat="tag in node.tags"> {{ tag.name }}</span> </td>
+			<td><span  data-ng-repeat="tag in node.tags"><span class="label label-primary"> {{ tag.name }} </span> </span> </td>
 			<td>{{ node.facts.is_virtual }} </td>
 			<td>{{ node.last_checkin}} </td>
+			<td> <a href="#/logs/{{node.name}}">Log</a></td>
 			<td> 
 				<button type="button" class="btn btn-default btn-xs" data-ng-click="command('delete-node', { name : node.name})">delete-node</button>
 				<button type="button" class="btn btn-default btn-xs" data-ng-click="command('reboot-node', { name : node.name})">reboot-node</button>

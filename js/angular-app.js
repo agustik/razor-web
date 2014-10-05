@@ -1,14 +1,23 @@
 var application = angular.module('razor', ['ngRoute']);
 
-application.controller('nodes', function ($scope, collections, commands, $interval, $http) {
+
+application.controller('logs', function ($scope, $routeParams, $http) {
+ console.log($routeParams);	
+ $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
+ 	$scope.data = data.items;
+ });
+});
+
+application.controller('collection', function ($scope, collections, commands, $interval, $http, $routeParams) {
 	$scope.data=[];
-	collections.getData('nodes').then(function (result){
+	console.log($routeParams.name);
+	collections.getData($routeParams.name).then(function (result){
 		console.log(result);
 		angular.forEach(result.items, function (value, key){
 			console.log(value);
 			$http.get(value.id).success(function(data){
 				$scope.data.push(data);
-			})
+			});
 		});
 	});
 	$scope.command = function (command,name){
@@ -16,69 +25,6 @@ application.controller('nodes', function ($scope, collections, commands, $interv
 	}		
 });
 
-
-application.controller('tags', function ($scope, collections, commands, $interval, $http) {
-	$scope.data=[];
-	collections.getData('tags').then(function (result){
-		console.log(result);
-		angular.forEach(result.items, function (value, key){
-			console.log(value);
-			$http.get(value.id).success(function(data){
-				$scope.data.push(data);
-			})
-		});
-	});		
-});
-
-
-application.controller('brokers', function ($scope, collections, commands, $interval, $http) {
-	$scope.data=[];
-	collections.getData('brokers').then(function (result){
-		console.log(result);
-		angular.forEach(result.items, function (value, key){
-			console.log(value);
-			$http.get(value.id).success(function(data){
-				$scope.data.push(data);
-			})
-		});
-	});		
-});
-application.controller('tasks', function ($scope, collections, commands, $interval, $http) {
-	$scope.data=[];
-	collections.getData('tasks').then(function (result){
-		console.log(result);
-		angular.forEach(result.items, function (value, key){
-			console.log(value);
-			$http.get(value.id).success(function(data){
-				$scope.data.push(data);
-			})
-		});
-	});		
-});
-application.controller('repos', function ($scope, collections, commands, $interval, $http) {
-	$scope.data=[];
-	collections.getData('repos').then(function (result){
-		console.log(result);
-		angular.forEach(result.items, function (value, key){
-			console.log(value);
-			$http.get(value.id).success(function(data){
-				$scope.data.push(data);
-			})
-		});
-	});		
-});
-application.controller('policies', function ($scope, collections, commands, $interval, $http) {
-	$scope.data=[];
-	collections.getData('policies').then(function (result){
-		console.log(result);
-		angular.forEach(result.items, function (value, key){
-			console.log(value);
-			$http.get(value.id).success(function(data){
-				$scope.data.push(data);
-			})
-		});
-	});		
-});
 
 application.service('collections', function ($http, $q){
     return{
@@ -118,29 +64,15 @@ application.config(function ($routeProvider) {
 		.when('/', {
 			controller : ''
 		})
-		.when('/nodes', {
-			templateUrl : 'views/nodes.html',
-			controller : 'nodes'
+		.when('/:name', {
+			templateUrl : function (params) {
+				return 'views/'+params.name+'.html';
+			},
+			controller : 'collection'
 		})
-		.when('/tasks', {
-			templateUrl : 'views/tasks.html',
-			controller : 'tasks'
-		})
-		.when('/repos', {
-			templateUrl : 'views/repos.html',
-			controller : 'repos'
-		})
-		.when('/brokers', {
-			templateUrl : 'views/brokers.html',
-			controller : 'brokers'
-		})
-		.when('/policies', {
-			templateUrl : 'views/policies.html',
-			controller : 'policies'
-		})
-		.when('/tags', {
-			templateUrl : 'views/tags.html',
-			controller : 'tags'
+		.when('/logs/:node', {
+			templateUrl : 'views/logs.html',
+			controller : 'logs'
 		})
 		.otherwise({ redirectTo: '/' });
 });
