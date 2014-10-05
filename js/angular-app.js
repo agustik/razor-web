@@ -52,7 +52,7 @@ application.service('commands', function ($http,$q) {
 				console.log(data);
 				if (data.result) {
 					$('#notify')
-						.removeClass('alert-info alert-danger')
+						.removeClass('hidden alert-info alert-danger')
 						.addClass('alert-info')
 						.text(data.result);
 				}
@@ -60,7 +60,7 @@ application.service('commands', function ($http,$q) {
 				console.log(response);
 				if(response.error){
 					$('#notify')
-						.removeClass('alert-info alert-danger')
+						.removeClass('hidden alert-info alert-danger')
 						.addClass('label-danger')
 						.text(response.error);
 				}
