@@ -1,10 +1,5 @@
 var application = angular.module('razor', ['ngRoute']);
 
-var config = {
-	server : 'http://slxrazor.edge.is' 
-}
-
-
 application.controller('nodes', function ($scope, collections, commands, $interval, $http) {
 	$scope.data=[];
 	collections.getData('nodes').then(function (result){
