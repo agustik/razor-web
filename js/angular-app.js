@@ -52,15 +52,15 @@ application.service('commands', function ($http,$q) {
 				console.log(data);
 				if (data.result) {
 					$('#notify')
-						.removeClass('label-info label-danger')
-						.addClass('label-info')
+						.removeClass('alert-info alert-danger')
+						.addClass('alert-info')
 						.text(data.result);
 				}
 			}).error(function (response){
 				console.log(response);
 				if(response.error){
 					$('#notify')
-						.removeClass('label-info label-danger')
+						.removeClass('alert-info alert-danger')
 						.addClass('label-danger')
 						.text(response.error);
 				}
