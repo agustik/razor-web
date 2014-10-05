@@ -1,0 +1,26 @@
+
+<table class="table table-hover main-list">
+	<thead>
+		<th>Event</th>
+		<th>Severity</th>
+		<th>Repo</th>
+		<th>Task</th>
+		<th>Template</th>
+		<th>Policy name</th>
+		<th>Stage</th>
+		<th>Timestamp</th>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="log in data | orderBy:timestamp"> 
+			<td>{{ log.event }}</td>
+			<td>{{ log.severity }}</td>
+			<td>{{ log.repo }}</td>
+			<td>{{ log.task }}</td>
+			<td>{{ log.template }}</td>
+			<td>{{ log['policy-name'] }}</td>
+			<td>{{ log.stage }}</td>
+			<td>{{ log.timestamp }}</td>
+		</tr>
+	</tbody>
+</table>
+	
