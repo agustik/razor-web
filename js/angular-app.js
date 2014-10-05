@@ -102,7 +102,7 @@ application.service('commands', function ($http,$q) {
 		exec : function (command, object) {
 			var data = angular.toJson(object);
 			console.log(command, data);
-			$http.post(config.server+'/commands/'+command, object).success(function(data){
+			$http.post(config.server+'/api/commands/'+command, object).success(function(data){
 				console.log(data);
 			});
 		}
