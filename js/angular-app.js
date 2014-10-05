@@ -105,7 +105,7 @@ application.service('commands', function ($http,$q) {
 			$http.post(config.server+'/api/commands/'+command, object).success(function(data){
 				console.log(data);
 				if (data.result) {
-					$('#notify').text(result);
+					$('#notify').text(data.result);
 				}
 			});
 		}
