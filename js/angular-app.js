@@ -62,7 +62,7 @@ application.service('commands', function ($http,$q) {
 					$('#notify')
 						.removeClass('label-info label-danger')
 						.addClass('label-danger')
-						.text(data.result);
+						.text(response.error);
 				}
 			})
 		}
