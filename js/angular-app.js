@@ -53,7 +53,7 @@ application.service('commands', function ($http,$q) {
 				if (data.result) {
 					$('#notify').text(data.result);
 				}
-			}).error(function (resoponse){
+			}).error(function (response){
 				console.log(response);
 			})
 		}
