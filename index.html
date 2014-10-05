@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="razor" >
 
 <head>
 
@@ -37,110 +37,57 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="#" class="navbar-brand">Razor</a>
+          <a href="#" class="navbar-brand">Razor Web</a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <li>
-              <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+              <a href="#/nodes" data-collection="nodes"><i class="fa fa-cloud"></i> Nodes</a>
             </li>
             <li>
-              <a href="#" data-collection="nodes"><i class="fa fa-cloud"></i> Nodes</a>
+              <a href="#/tags" data-collection="tags"><i class="fa fa-tags"></i> Tags</a>
             </li>
             <li>
-              <a href="#" data-collection="tags"><i class="fa fa-tags"></i> Tags</a>
+              <a href="#/repos" data-collection="repos"><i class="fa fa-folder-open" ></i> Repos</a>
             </li>
             <li>
-              <a href="#" data-collection="repos"><i class="fa fa-folder-open" ></i> Repos</a>
+              <a href="#/policies" data-collection="policies"><i class="fa fa-paperclip"></i> Policies</a>
             </li>
             <li>
-              <a href="#" data-collection="policies"><i class="fa fa-paperclip"></i> Policies</a>
+              <a href="#/tasks" data-collection="tasks"><i class="fa fa-tasks"></i> Tasks</a>
             </li>
             <li>
-              <a href="#" data-collection="tasks"><i class="fa fa-tasks"></i> Tasks</a>
-            </li>
-            <li>
-              <a href="#" data-collection="brokers"><i class="fa fa-random"></i> Brokers</a>
+              <a href="#/brokers" data-collection="brokers"><i class="fa fa-random"></i> Brokers</a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
     <div class="container-fluid">
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header" id="api_used"></h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                <table class="table table-hover  main-list" id="table_1">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-lg-6">
-                <div id="details">
-                    ....
-                </div>
-            </div>
-           </div>
+            <div data-ng-view="">
+
+            </div >
+            
         </div>
         <!-- /#page-wrapper -->
 
     </div>
 
-    <div class="modal fade" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="log_modal" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"></h4>
-              </div>
-              <div class="modal-body">
-
-                    <div class="panel-body">
-                      <table class="table" id="modal_table">
-                        <thead>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                  </div>
-
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /#wrapper -->
-    <!-- <nav class="navbar navbar-default navbar-fixed-bottom action-nav" role="navigation">
-      <div class="container">
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a class="" href="#" data-action="reboot" data-toggle="tooltip" title="Reboot" data-placement="top" ><i class="fa fa-power-off col-lg-1"></i></a></li>
-            <li><a class="" href="#" data-action="delete" data-toggle="tooltip" title="Delete" data-placement="top"><i class="fa fa-trash-o col-lg-1"></i></a></li>
-            <li><a class="" href="#" data-action="reinstall" data-toggle="tooltip" title="Reinstall" data-placement="top"><i class="fa fa-refresh col-lg-1"></i></a></li>
-            <li><a class="" href="#" data-action="metadata" data-toggle="tooltip" title="Remove metadata" data-placement="top"><i class="fa fa-times col-lg-1"></i></a></li>
-            <li><a class="" href="#" data-action="edit" data-toggle="tooltip" title="Edit" data-placement="top"><i class="fa fa-edit col-lg-1"></i></a></li>
-            <!-- 
-            <li><a class="navbar-brand" href="#" data-toggle="tooltip" title="Reboot" data-placement="top"><i class="fa fa-power-off col-lg-1"></i></a></li>
-            <li><a class="navbar-brand" href="#" data-toggle="tooltip" title="Reboot" data-placement="top"><i class="fa fa-power-off col-lg-1"></i></a></li> --
-          </ul>
-        </div>
-      </div>
-    </nav> -->
 
     <!-- Core Scripts - Include with every page -->
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/razor.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-refresh.js"></script>
+    <script src="js/angular-app.js"></script>
     <script type="text/javascript">
         $(document).tooltip({
             selector : '[data-toggle="tooltip"]'

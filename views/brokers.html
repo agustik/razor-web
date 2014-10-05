@@ -1,0 +1,18 @@
+<table class="table table-hover main-list">
+	<thead>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Policies Count</th>
+		<th>environment</th>
+		<th>Server</th>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="broker in data track by $index"> 
+			<td>{{ broker.name }} </td>
+			<td>{{ broker['broker-type'] }} </td>
+			<td>{{ broker.policies.count }} </td>
+			<td>{{ broker.configuration.environment }} </td>
+			<td>{{ broker.configuration.server }} </td>
+		</tr>
+	</tbody>
+</table>

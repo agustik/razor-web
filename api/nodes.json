@@ -1,0 +1,264 @@
+[
+    {
+        "spec": "http://api.puppetlabs.com/razor/v1/collections/nodes/member",
+        "id": "http://slxrazor.edge.is/api/collections/nodes/node3",
+        "name": "node3",
+        "hw_info": {
+            "mac": [
+                "00-50-56-91-67-97"
+            ]
+        },
+        "dhcp_mac": "00-50-56-91-67-97",
+        "log": {
+            "id": "http://slxrazor.edge.is/api/collections/nodes/node3/log",
+            "name": "log"
+        },
+        "tags": [
+            {
+                "spec": "http://api.puppetlabs.com/razor/v1/collections/tags/member",
+                "id": "http://slxrazor.edge.is/api/collections/tags/small",
+                "name": "small"
+            }
+        ],
+        "state": {
+            "installed": false
+        },
+        "last_checkin": "2014-10-04T21:29:20+00:00"
+    },
+    {
+        "spec": "http://api.puppetlabs.com/razor/v1/collections/nodes/member",
+        "id": "http://slxrazor.edge.is/api/collections/nodes/node4",
+        "name": "node4",
+        "hw_info": {
+            "mac": [
+                "00-50-56-91-33-f1"
+            ]
+        },
+        "dhcp_mac": "00-50-56-91-33-f1",
+        "log": {
+            "id": "http://slxrazor.edge.is/api/collections/nodes/node4/log",
+            "name": "log"
+        },
+        "tags": [
+            {
+                "spec": "http://api.puppetlabs.com/razor/v1/collections/tags/member",
+                "id": "http://slxrazor.edge.is/api/collections/tags/small",
+                "name": "small"
+            }
+        ],
+        "facts": {
+            "hardwareisa": "x86_64",
+            "macaddress": "00:50:56:91:33:f1",
+            "architecture": "x86_64",
+            "hardwaremodel": "x86_64",
+            "processor0": "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz",
+            "processorcount": "1",
+            "interfaces": "ens32,lo",
+            "ipaddress_ens32": "192.168.100.204",
+            "macaddress_ens32": "00:50:56:91:33:f1",
+            "netmask_ens32": "255.255.255.0",
+            "ipaddress_lo": "127.0.0.1",
+            "netmask_lo": "255.0.0.0",
+            "memorysize_mb": "2003.00",
+            "memoryfree_mb": "1912.36",
+            "facterversion": "2.0.1",
+            "ipaddress": "192.168.100.204",
+            "virtual": "vmware",
+            "is_virtual": "true",
+            "uniqueid": "007f0100",
+            "blockdevice_sda_size": 17179869184,
+            "blockdevice_sda_vendor": "VMware",
+            "blockdevice_sda_model": "Virtual disk",
+            "blockdevice_sr0_size": 1073741312,
+            "blockdevice_sr0_vendor": "NECVMWar",
+            "blockdevice_sr0_model": "VMware IDE CDR10",
+            "blockdevices": "sda,sr0",
+            "physicalprocessorcount": "1",
+            "network_ens32": "192.168.100.0",
+            "network_lo": "127.0.0.0",
+            "boardmanufacturer": "Intel Corporation",
+            "boardproductname": "440BX Desktop Reference Platform",
+            "boardserialnumber": "None",
+            "bios_vendor": "Phoenix Technologies LTD",
+            "bios_version": "6.00",
+            "bios_release_date": "06/22/2012",
+            "manufacturer": "VMware, Inc.",
+            "productname": "VMware Virtual Platform",
+            "serialnumber": "VMware-42 11 51 cb cd 4f d7 e8-48 d6 62 d4 b9 4f 38 5a",
+            "uuid": "421151CB-CD4F-D7E8-48D6-62D4B94F385A",
+            "type": "Other",
+            "netmask": "255.255.255.0"
+        },
+        "state": {
+            "installed": false
+        },
+        "last_checkin": "2014-10-04T21:29:12+00:00"
+    },
+    {
+        "spec": "http://api.puppetlabs.com/razor/v1/collections/nodes/member",
+        "id": "http://slxrazor.edge.is/api/collections/nodes/node1",
+        "name": "node1",
+        "hw_info": {
+            "mac": [
+                "00-50-56-91-18-92"
+            ]
+        },
+        "dhcp_mac": "00-50-56-91-18-92",
+        "policy": {
+            "spec": "http://api.puppetlabs.com/razor/v1/collections/policies/member",
+            "id": "http://slxrazor.edge.is/api/collections/policies/centos",
+            "name": "centos"
+        },
+        "log": {
+            "id": "http://slxrazor.edge.is/api/collections/nodes/node1/log",
+            "name": "log"
+        },
+        "tags": [
+            {
+                "spec": "http://api.puppetlabs.com/razor/v1/collections/tags/member",
+                "id": "http://slxrazor.edge.is/api/collections/tags/test-tag",
+                "name": "test-tag"
+            },
+            {
+                "spec": "http://api.puppetlabs.com/razor/v1/collections/tags/member",
+                "id": "http://slxrazor.edge.is/api/collections/tags/small",
+                "name": "small"
+            }
+        ],
+        "facts": {
+            "hardwareisa": "x86_64",
+            "macaddress": "00:50:56:91:18:92",
+            "architecture": "x86_64",
+            "hardwaremodel": "x86_64",
+            "processor0": "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz",
+            "processorcount": "1",
+            "interfaces": "ens32,lo",
+            "ipaddress_ens32": "192.168.100.201",
+            "macaddress_ens32": "00:50:56:91:18:92",
+            "netmask_ens32": "255.255.255.0",
+            "ipaddress_lo": "127.0.0.1",
+            "netmask_lo": "255.0.0.0",
+            "memorysize_mb": "2003.00",
+            "memoryfree_mb": "1900.38",
+            "facterversion": "2.0.1",
+            "ipaddress": "192.168.100.201",
+            "virtual": "vmware",
+            "is_virtual": "true",
+            "uniqueid": "007f0100",
+            "blockdevice_sda_size": 17179869184,
+            "blockdevice_sda_vendor": "VMware",
+            "blockdevice_sda_model": "Virtual disk",
+            "blockdevice_sr0_size": 1073741312,
+            "blockdevice_sr0_vendor": "NECVMWar",
+            "blockdevice_sr0_model": "VMware IDE CDR10",
+            "blockdevices": "sda,sr0",
+            "physicalprocessorcount": "1",
+            "network_ens32": "192.168.100.0",
+            "network_lo": "127.0.0.0",
+            "boardmanufacturer": "Intel Corporation",
+            "boardproductname": "440BX Desktop Reference Platform",
+            "boardserialnumber": "None",
+            "bios_vendor": "Phoenix Technologies LTD",
+            "bios_version": "6.00",
+            "bios_release_date": "06/22/2012",
+            "manufacturer": "VMware, Inc.",
+            "productname": "VMware Virtual Platform",
+            "serialnumber": "VMware-42 11 25 58 e3 0f 37 c2-d4 a1 d1 86 41 3a b7 fd",
+            "uuid": "42112558-E30F-37C2-D4A1-D186413AB7FD",
+            "type": "Other",
+            "netmask": "255.255.255.0"
+        },
+        "metadata": {
+            "ip": "192.168.100.201"
+        },
+        "state": {
+            "installed": "centos",
+            "installed_at": "2014-10-02T23:27:06+00:00",
+            "stage": "boot_local"
+        },
+        "hostname": "testmachine.edge.is",
+        "root_password": "ZBBecnV3erX9rF8",
+        "last_checkin": "2014-10-02T23:18:19+00:00"
+    },
+    {
+        "spec": "http://api.puppetlabs.com/razor/v1/collections/nodes/member",
+        "id": "http://slxrazor.edge.is/api/collections/nodes/node2",
+        "name": "node2",
+        "hw_info": {
+            "mac": [
+                "00-50-56-91-6d-08"
+            ]
+        },
+        "dhcp_mac": "00-50-56-91-6d-08",
+        "policy": {
+            "spec": "http://api.puppetlabs.com/razor/v1/collections/policies/member",
+            "id": "http://slxrazor.edge.is/api/collections/policies/slxzimbra1",
+            "name": "slxzimbra1"
+        },
+        "log": {
+            "id": "http://slxrazor.edge.is/api/collections/nodes/node2/log",
+            "name": "log"
+        },
+        "tags": [
+            {
+                "spec": "http://api.puppetlabs.com/razor/v1/collections/tags/member",
+                "id": "http://slxrazor.edge.is/api/collections/tags/small",
+                "name": "small"
+            }
+        ],
+        "facts": {
+            "hardwareisa": "x86_64",
+            "macaddress": "00:50:56:91:6d:08",
+            "architecture": "x86_64",
+            "hardwaremodel": "x86_64",
+            "processor0": "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz",
+            "processorcount": "1",
+            "interfaces": "ens160,lo",
+            "ipaddress_ens160": "192.168.100.202",
+            "macaddress_ens160": "00:50:56:91:6d:08",
+            "netmask_ens160": "255.255.255.0",
+            "ipaddress_lo": "127.0.0.1",
+            "netmask_lo": "255.0.0.0",
+            "memorysize_mb": "2003.00",
+            "memoryfree_mb": "1910.18",
+            "facterversion": "2.0.1",
+            "ipaddress": "192.168.100.202",
+            "virtual": "vmware",
+            "is_virtual": "true",
+            "uniqueid": "007f0100",
+            "blockdevice_sda_size": 17179869184,
+            "blockdevice_sda_vendor": "VMware",
+            "blockdevice_sda_model": "Virtual disk",
+            "blockdevice_sr0_size": 1073741312,
+            "blockdevice_sr0_vendor": "NECVMWar",
+            "blockdevice_sr0_model": "VMware IDE CDR10",
+            "blockdevices": "sda,sr0",
+            "physicalprocessorcount": "1",
+            "network_ens160": "192.168.100.0",
+            "network_lo": "127.0.0.0",
+            "boardmanufacturer": "Intel Corporation",
+            "boardproductname": "440BX Desktop Reference Platform",
+            "boardserialnumber": "None",
+            "bios_vendor": "Phoenix Technologies LTD",
+            "bios_version": "6.00",
+            "bios_release_date": "06/22/2012",
+            "manufacturer": "VMware, Inc.",
+            "productname": "VMware Virtual Platform",
+            "serialnumber": "VMware-42 11 a5 40 9a 33 c8 fe-12 4b 10 5d b1 de 7a 7a",
+            "uuid": "4211A540-9A33-C8FE-124B-105DB1DE7A7A",
+            "type": "Other",
+            "netmask": "255.255.255.0"
+        },
+        "metadata": {
+            "ip": "192.168.100.202"
+        },
+        "state": {
+            "installed": "slxzimbra1",
+            "installed_at": "2014-10-03T00:11:15+00:00",
+            "stage": "boot_local"
+        },
+        "hostname": "slxzimbra1.edge.is",
+        "root_password": "7m4XKTyXF6xKcQT",
+        "last_checkin": "2014-10-03T00:02:49+00:00"
+    }
+]

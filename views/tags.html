@@ -1,0 +1,17 @@
+
+		<table class="table table-hover main-list">
+			<thead>
+				<th>Name</th>
+				<th>Nodes count</th>
+				<th>Policie Count</th>
+				<th>Rule</th>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="tag in data track by $index"> 
+					<td>{{ tag.name }} </td>
+					<td>{{ tag.nodes.count }} </td>
+					<td>{{ tag.policies.count }} </td>
+					<td>{{ tag.rule | json }} </td>
+				</tr>
+			</tbody>
+		</table>

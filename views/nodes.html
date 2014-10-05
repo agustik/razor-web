@@ -1,0 +1,41 @@
+
+<div class="col-sm-4">
+	<input type="text" class="form-control" data-ng-model="filter.name"/>
+</div>
+
+<table class="table table-hover main-list">
+	<thead>
+		<th>Name</th>
+		<th>Hostname</th>
+		<th>Processors</th>
+		<th>Memory</th>
+		<th>Disksize</th>
+		<th>Mac Address</th>
+		<th>Ipaddress</th>
+		<th>Installed</th>
+		<th>Tags</th>
+		<th>Virtual</th>
+		<th>Checkin</th>
+		<th></th>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="node in data | filter:filter.name | orderBy:'name'" > 
+			<td>{{ node.name }} </td>
+			<td>{{ node.hostname }}</td>
+			<td>{{ node.facts.processorcount }} </td>
+			<td>{{ (node.facts.memorysize_mb)/1024 | number:0 }} Gb</td>
+			<td>{{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}} Gb</td>
+			<td>{{ node.facts.macaddress }} </td>
+			<td>{{ node.facts.ipaddress }} </td>
+			<td>{{ node.state.installed }} </td>
+			<td><span class="label label-primary" data-ng-repeat="tag in node.tags"> {{ tag.name }}</span> </td>
+			<td>{{ node.facts.is_virtual }} </td>
+			<td>{{ node.last_checkin}} </td>
+			<td> 
+				<button type="button" class="btn btn-default btn-xs" data-ng-click="command('delete-node', { name : node.name})">delete-node</button>
+				<button type="button" class="btn btn-default btn-xs" data-ng-click="command('reboot-node', { name : node.name})">reboot-node</button>
+				<button type="button" class="btn btn-default btn-xs" data-ng-click="command('reinstall-node', { name : node.name})">reinstall-node</button>
+			</td>
+		</tr>
+	</tbody>
+</table>

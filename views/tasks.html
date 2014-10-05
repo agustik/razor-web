@@ -1,0 +1,13 @@
+
+	<table class="table table-hover main-list">
+		<thead>
+			<th>Name</th>
+			<th>Version</th>
+		</thead>
+		<tbody>
+			<tr data-ng-repeat="task in data track by $index"> 
+				<td>{{ task.name }} </td>
+				<td>{{ task.os.version }} </td>
+			</tr>
+		</tbody>
+	</table>

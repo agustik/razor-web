@@ -1,0 +1,24 @@
+
+		<table class="table table-hover main-list">
+			<thead>
+				<th>Name</th>
+				<th>Enebled</th>
+				<th>Max Count</th>
+				<th># of nodes</th>
+				<th>Repo name</th>
+				<th>Tags</th>
+				<th>Task name</th>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="policie in data track by $index"> 
+					<td>{{ policie.name }} </td>
+					<td>{{ policie.enabled }} </td>
+					<td>{{ policie.max_count }} </td>
+					<td>{{ policie.nodes.count }} </td>
+					<td>{{ policie.repo.name }} </td>
+					<td><span class="label label-primary" data-ng-repeat="tag in policie.tags"> {{ tag.name }} </span> </td>
+					<td>{{ policie.task.name }} </td>
+				</tr>
+			</tbody>
+		</table>
+			
