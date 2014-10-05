@@ -51,10 +51,19 @@ application.service('commands', function ($http,$q) {
 			$http.post(config.server+'/api/commands/'+command, object).success(function(data){
 				console.log(data);
 				if (data.result) {
-					$('#notify').text(data.result);
+					$('#notify')
+						.removeClass('label-info label-danger')
+						.addClass('label-info')
+						.text(data.result);
 				}
 			}).error(function (response){
 				console.log(response);
+				if(response.error){
+					$('#notify')
+						.removeClass('label-info label-danger')
+						.addClass('label-danger')
+						.text(data.result);
+				}
 			})
 		}
 	}
