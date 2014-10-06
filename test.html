@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html data-ng-app="test" >
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Razor tests</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/select.min.css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/select2.css">
+  <style type="text/css">
+    body {
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" ng-controller="TagsCreator">
+    <form class="form-inline"  role="form">
+      <div class="form-group">
+        <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
+        </select>
+      </div>
+      <div class="form-group">
+          <div class="input-group">
+            <ui-select ng-model="selected.fact" theme="bootstrap">
+              <ui-select-match placeholder="Select or search a Puppet Fact in the list...">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices repeat="item in available.facts | filter: $select.search">
+                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                <small ><strong>example:</strong> </small>
+                <small ng-bind-html="item.example | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+
+            <span class="input-group-btn">
+              <button ng-click="selected.fact.selected = undefined" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>
+
+          </div>
+      </div>
+      <div class="form-group">
+        <input class="form-control" ng-model="tag[2]"></input>
+      </div>
+      
+      <div class="form-group">
+        {{ tag | json }}
+      </div>
+    </form>
+  </div>
+
+
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="js/angular.min.js"></script>
+    <script src="js/ui-bootstrap-tpls-0.11.2.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/select.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+    <!-- Application Scripts -->
+    <script src="js/test.js"></script>
+
+
+</body>
+
+</html>

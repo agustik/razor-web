@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ inputs.header }} a policie!</h3>
+</div>
+<div class="modal-body">
+    <form role="form">
+       <div class="form-group">
+	    <label class="checkbox">
+		    <input type="checkbox" data-ng-model="inputs.enabled">
+		    Enabled
+		  </label>
+	    
+	  </div>
+	  <div class="form-group">
+	    <label for="name">Name </label>
+	    <input type="text" data-ng-model="inputs.name" class="form-control" id="name" placeholder="Name of the policie" required>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="repo">Repo</label>
+	    <div ng-controller="GetAvailableRepos">
+	    	<select class="form-control" ng-options="repo for repo in repos" data-ng-model="inputs.repo" required>
+	    	</select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="broker">Broker</label>
+	    <div ng-controller="GetAvilableBrokers">
+	    	<select class="form-control" ng-options="broker for broker in brokers" data-ng-model="inputs.broker" required>
+	    	</select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="hostname">Hostname</label>
+	    <input type="text" data-ng-model="inputs.hostname" class="form-control" id="hostname" placeholder="host${id}.example.com" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="root_password">root password</label>
+	    <input type="text" data-ng-model="inputs.root_password" class="form-control" id="root_password" placeholder="Some superstrong password." required>
+	  </div>
+	  <div class="form-group">
+	    <label for="max_count">Max count</label>
+	    <input type="text" data-ng-model="inputs.max_count" class="form-control" id="max_count" placeholder="1" required ng-value="1">
+	  </div>
+	  <div class="form-group">
+	    <label for="tags">Tags</label>
+	    <ui-select multiple ng-model="inputs.tags" theme="bootstrap" ng-disabled="disabled" >
+		    <ui-select-match placeholder="Select tag">{{$item}}</ui-select-match>
+		    <ui-select-choices repeat="tag in availableTags | filter:$select.search">
+		      {{ tag }}
+		    </ui-select-choices>
+		  </ui-select>
+		 
+	  </div>
+	</form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

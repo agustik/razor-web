@@ -1,3 +1,6 @@
+		
+<div ng-controller="EditModal" class="ng-scope">
+    <button class="btn btn-default" ng-click="open('lg', 'policies')">Create a policie</button>
 
 		<table class="table table-hover main-list">
 			<thead>
@@ -10,7 +13,7 @@
 				<th>Task name</th>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="policie in data track by $index"> 
+				<tr data-ng-repeat="policie in data track by $index"  data-ng-Dblclick="open('lg', 'policies', policie.name)"> 
 					<td>{{ policie.name }} </td>
 					<td>{{ policie.enabled }} </td>
 					<td>{{ policie.max_count }} </td>
@@ -21,4 +24,4 @@
 				</tr>
 			</tbody>
 		</table>
-			
+</div>

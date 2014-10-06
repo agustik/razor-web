@@ -1,12 +1,20 @@
+		
+<div ng-controller="EditModal" class="ng-scope">
+    <button class="btn btn-default" ng-click="open('lg', 'repos')">Create a repo</button>
+
 		<table class="table table-hover main-list">
 			<thead>
 			<th>Name</th>
 			<th>Task name</th>
+			<th>ISO url</th>
 		</thead>
 			<tbody>
-				<tr data-ng-repeat="repo in data track by $index"> 
+				<tr data-ng-repeat="repo in data track by $index" data-ng-Dblclick="open('lg', 'repos', repo.name)"> 
 					<td>{{ repo.name }} </td>
 					<td>{{ repo.task.name }} </td>
+					<td>{{ repo.iso_url}}</td>
+
 				</tr>
 			</tbody>
 		</table>
+	</div>
