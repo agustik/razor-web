@@ -23,12 +23,22 @@
 
 <body>
   <div class="container" ng-controller="TagsCreator">
-    <form class="form-inline"  role="form">
-      <div class="form-group">
+  <div clasS="col-md-12">
+    
+    <div class="row">
+        <div class="col-md-2">
+        <button class="btn">Add rule</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    
+    <div class="row" >
+      <div class="col-md-3">
         <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
         </select>
       </div>
-      <div class="form-group">
+      <div class="col-md-4">
           <div class="input-group">
             <ui-select ng-model="selected.fact" theme="bootstrap">
               <ui-select-match placeholder="Select or search a Puppet Fact in the list...">{{$select.selected.name}}</ui-select-match>
@@ -40,23 +50,29 @@
             </ui-select>
 
             <span class="input-group-btn">
-              <button ng-click="selected.fact.selected = undefined" class="btn btn-default">
+              <button ng-click="selected.fact = undefined " class="btn btn-default">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </span>
 
           </div>
       </div>
-      <div class="form-group">
-        <input class="form-control" ng-model="tag[2]"></input>
+      <div class="col-md-3">
+        <input class="form-control" ng-model="tag[2]"/>
       </div>
-      
-      <div class="form-group">
-        {{ tag | json }}
-      </div>
-    </form>
-  </div>
+    </div> <!-- row ends ..-->
+    </div>
+    <div class="col-md-12">
+      <pre>
+{{ tag | json }}
+      </pre>
+    </div>
 
+  <button ng-click="addHtml()">blerg</button>
+  <div ng-repeat="html in lines"  ng-bind-html-unsafe="CreateHtml()">
+
+  </div>
+  </div>
 
 
     <!-- Core Scripts - Include with every page -->

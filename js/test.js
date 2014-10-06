@@ -2,8 +2,6 @@ var application = angular.module('test', ['ngRoute', 'ui.bootstrap','ui.select',
 
 application.controller('TagsCreator', function ($scope){
 
-
-
 	$scope.available = {};
 	$scope.selected = {
 		fact : ''
@@ -17,6 +15,21 @@ application.controller('TagsCreator', function ($scope){
 		}
 	});
 
+	$scope.lines = [];
+
+	$scope.snippet =
+          '<p style="color:blue">an html\n' +
+          '<em onmouseover="this.textContent=\'PWN3D!\'">click here</em>\n' +
+          'snippet</p>';
+    $scope.addHtml = function (){
+    	$scope.lines.push($scope.snippets);
+    	console.log($scope.lines);
+    }
+
+     $scope.CreateHtml = function() {
+     		
+          return $scope.snippet;
+      };
 
 	$scope.available = {
 		facts : [
@@ -72,7 +85,6 @@ application.controller('TagsCreator', function ($scope){
 			'>=' ,
 			'<='
 		]
-	}
-
+	};
 
 });
