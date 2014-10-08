@@ -1,8 +1,8 @@
-var application = angular.module('razor', ['ngRoute', 'ui.bootstrap','ui.select']);
+var application = angular.module('razor', ['ngRoute', 'ui.bootstrap','ui.select','ngSanitize']);
 
 
 application.controller('logs', function ($scope, $routeParams, $http) {
- console.log($routeParams);	
+ //console.log($routeParams);	
  $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
  	$scope.data = data.items;
  });
@@ -13,31 +13,10 @@ application.config(function(uiSelectConfig) {
   uiSelectConfig.theme = 'select2';
 });
 
-application.controller('collection', function ($interval, $scope, collections, commands, $interval, $http, $routeParams) {
+application.controller('collection', function ( $interval, $scope, collections, commands, $interval, $http, $routeParams) {
 	$scope.data=[];
-	console.log($scope);
-	// $interval(function (){
-	//  	//$scope.$apply;
-	//  	$http.get(config.server+'/api/collections/'+$routeParams.name).success(function (data){
-	//  		console.log($scope.data);
-	//  		angular.forEach(data.items, function (value, key){
-	//  			$http.get(value.id).success(function (res){
-	//  				console.log(value.name, res.last_checkin);
-	//  				angular.forEach($scope.data, function (a, b){
-	//  					if(a.name == value.name){
-	//  						console.log(Date.parse(a.last_checkin), Date.parse(res.last_checkin));
-	//  						if(Date.parse(a.last_checkin) < Date.parse(res.last_checkin)){
-	//  							console.log('THERS IS NEW A SHERRIF IN TOWN', res.name, b, key);
-	//  							$scope.data.splice(b,0,res);
-	//  							continue;
-	//  						}
-	//  					}
-	//  				})
-	//  			});
-	 		
-	//  		});
-	//  	});
-	//  },3000);
+	//console.log($scope);
+
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
 		angular.forEach(result.items, function (value, key){
@@ -50,7 +29,7 @@ application.controller('collection', function ($interval, $scope, collections, c
 					}
 					//if(data.unix - )
 				}
-				console.log(data);
+				//console.log(data);
 				$scope.data.push(data);
 			});
 		});
@@ -71,7 +50,7 @@ application.service('collections', function ($http, $q){
  
         deferred.reject("An error occured while fetching items");
       });
- 		console.log(deferred.promise);
+ 		//console.log(deferred.promise);
       return deferred.promise;
     }
   }
@@ -109,7 +88,7 @@ application.filter('propsFilter', function() {
 });
 
 
-application.controller('EditModal', function ($scope, $modal, $log) {
+application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	$scope.inputs = { 
 		action : false
 	};
@@ -122,7 +101,7 @@ application.controller('EditModal', function ($scope, $modal, $log) {
 	      size: size,
 	      resolve: {
 	        inputs: function () {
-	        	console.log(name, $scope.inputs);
+	        	//console.log(name, $scope.inputs);
 	        	if(name){
 	        		$scope.inputs.selected = selected;
 	        		$scope.inputs.action = { name : name, selected : selected };
@@ -138,9 +117,27 @@ application.controller('EditModal', function ($scope, $modal, $log) {
 	      }
 	    });
 
+	    var available_commands = {
+	    	Create : {
+	    		policies : 'create-policy'
+	    	},
+	    	Update : {
+	    		policies : 'update-policy'
+
+	    	}
+	    } 
+
 	    modalInstance.result.then(function (selectedItem) {
+	      var selected = selectedItem.selected;
+	      var header  = selectedItem.header;
+	      var action = available_commands[header][selected];
+	      delete selectedItem.header;
+	      delete selectedItem.selected;
 	      $scope.selected = selectedItem;
-	      console.log(angular.toJson(selectedItem));
+
+
+	      console.log(angular.toJson(selectedItem),action );
+	      commands.exec(action, angular.toJson(selectedItem));
 	    }, function () {
 	      $log.info('Modal dismissed at: ' + new Date());
 	    });
@@ -150,12 +147,80 @@ application.controller('EditModal', function ($scope, $modal, $log) {
 
 application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInstance, inputs) {
   $scope.availableTags = [];
-	
+ 	$scope.available = {};
+	$scope.selected = {
+		fact : ''
+	};
+
+	$scope.tag = ['=',[],''];
+
+	$scope.$watch('selected.fact', function (a, b){
+		if(typeof $scope.selected.fact == 'object'){
+			$scope.tag[1] = ['fact',$scope.selected.fact.name];
+			$scope.tag[2] = $scope.selected.fact.example;
+		}
+	});
+	$scope.available = {
+		facts : [
+		{ name:	"hardwareisa", example: "x86_64" },
+		{ name:	"macaddress", example: "00:50:56:91:67:97" },
+		{ name:	"architecture", example: "x86_64" },
+		{ name:	"hardwaremodel", example: "x86_64" },
+		{ name:	"processor0", example: "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz" },
+		{ name:	"processorcount", example: "1" },
+		{ name:	"interfaces", example: "ens32,lo" },
+		{ name:	"ipaddress_ens32", example: "192.168.100.203" },
+		{ name:	"macaddress_ens32", example: "00:50:56:91:67:97" },
+		{ name:	"netmask_ens32", example: "255.255.255.0" },
+		{ name:	"ipaddress_lo", example: "127.0.0.1" },
+		{ name:	"netmask_lo", example: "255.0.0.0" },
+		{ name:	"memorysize_mb", example: "2003.00" },
+		{ name:	"memoryfree_mb", example: "1906.64" },
+		{ name:	"facterversion", example: "2.0.1" },
+		{ name:	"ipaddress", example: "192.168.1.0" },
+		{ name:	"virtual", example: "vmware" },
+		{ name:	"is_virtual", example: "true" },
+		{ name:	"uniqueid", example: "007f0100" },
+		{ name:	"blockdevice_sda_size", example: 17179869184 },
+		{ name:	"blockdevice_sda_vendor", example: "VMware" },
+		{ name:	"blockdevice_sda_model", example: "Virtual disk" },
+		{ name:	"blockdevice_sr0_size", example: 1073741312 },
+		{ name:	"blockdevice_sr0_vendor", example: "NECVMWar" },
+		{ name:	"blockdevice_sr0_model", example: "VMware IDE CDR10" },
+		{ name:	"blockdevices", example: "sda,sr0" },
+		{ name:	"physicalprocessorcount", example: "1" },
+		{ name:	"network_ens32", example: "192.168.1.0" },
+		{ name:	"network_lo", example: "127.0.0.0" },
+		{ name:	"boardmanufacturer", example: "Intel Corporation" },
+		{ name:	"boardproductname", example: "440BX Desktop Reference Platform" },
+		{ name:	"boardserialnumber", example: "None" },
+		{ name:	"bios_vendor", example: "Phoenix Technologies LTD" },
+		{ name:	"bios_version", example: "6.00" },
+		{ name:	"bios_release_date", example: "06/22/2012" },
+		{ name:	"manufacturer", example: "VMware, Inc." },
+		{ name:	"productname", example: "VMware Virtual Platform" },
+		{ name:	"serialnumber", example: "VMware-42 11 b0 da bd d7 7f 77-c6 10 df 9d 87 bf 28 16" },
+		{ name:	"uuid", example: "4211B0DA-BDD7-7F77-C610-DF9D87BF2816" },
+		{ name:	"type", example: "Other" },
+		{ name:	"netmask", example: "255.255.255.0" }
+		],
+		selector : [
+			'=' ,
+			'!=' ,
+			'in' ,
+			'num' ,
+			'<' ,
+			'>' ,
+			'>=' ,
+			'<='
+		]
+	};
   // $scope.multipleDemo = {};
   // $scope.multipleDemo.colors = ['Blue','Red'];
   $scope.inputs = inputs;
   $scope.inputs.header = 'Create';
-  console.log('INPUTS: :: ',inputs);
+
+  console.log('Inputs: ',inputs);
   if(inputs.action ) {
   	
   	$http.get(config.server + '/api/collections/' + inputs.action.selected + '/' + inputs.action.name).success(function (data){
@@ -181,20 +246,24 @@ application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInsta
   			});
   			data.tags=tagsArr;
   		}
-
   		
-  		console.log($scope.inputs);
   		$scope.inputs = data;
+  		//$scope.inputs.repo = 
+
   	});
   }
-    if(inputs.selected == 'policies'){
+    switch (inputs.selected){
+    	case 'policies' : 
 		$http.get(config.server + '/api/collections/tags').success(function (res){
-			console.log('TAGS:::',res.items);
+			//console.log('TAGS:::',res.items);
 			angular.forEach(res.items, function (value, key){
-				console.log(value.name);
+				//console.log(value.name);
 				$scope.availableTags.push(value.name);
 			});
 		});
+
+		console.log($scope.selected);
+		break;
   	}
   $scope.ok = function () {
     $modalInstance.close($scope.inputs);
@@ -206,11 +275,11 @@ application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInsta
 });
 
 
-application.service('commands', function ($http,$q) {
+application.service('commands', function ($http, $q, tools) {
 	return {
 		exec : function (command, object) {
 			var data = angular.toJson(object);
-			tools.notify('meadf','alert-info');
+			
 			$http.post(config.server+'/api/commands/'+command, object).success(function(response){
 				if (response.result) {
 					tools.notify(response.result, 'alert-info');
@@ -230,16 +299,18 @@ application.controller('GetAvailableRepos', function ($scope, $http) {
 		angular.forEach(data.items, function (value){
 			$scope.repos.push(value.name);
 		});
-		
+		$scope.inputs.repo = $scope.repos[0];
 	});
 });
 
-application.controller('GetAvilableBrokers', function ($scope, $http) {
+application.controller('GetAvailableBrokers', function ($scope, $http) {
 	$scope.brokers = [];
 	$http.get(config.server + '/api/collections/brokers').success(function (data){
 		angular.forEach(data.items, function (value){
+			console.log(value.name);
 			$scope.brokers.push(value.name);
 		});
+		$scope.inputs.broker=$scope.brokers[0];
 	});
 });
 
@@ -247,8 +318,10 @@ application.controller('GetAvailableTasks', function ($scope, $http) {
 	$scope.tasks = [];
 	$http.get(config.server + '/api/collections/tasks').success(function (data){
 		angular.forEach(data.items, function (value){
+
 			$scope.tasks.push(value.name);
 		});
+		$scope.inputs.task = $scope.tasks[0];
 	});
 });
 
@@ -270,17 +343,20 @@ application.config(function ($routeProvider) {
 		.otherwise({ redirectTo: '/' });
 });
 
-var tools = {
-	notify : function (msg, css) {
+
+application.service('tools', function (){
+	return {
+		notify : function (msg, css){
 		angular
-			.element('#notify')
+			.element(document.querySelector('#notify'))
 			.removeClass('hidden alert-info alert-danger')
 			.addClass(css)
 			.text(msg);
 		setTimeout(function () {
 			angular
-				.element('#notify')
+				.element(document.querySelector('#notify'))
 				.addClass('hidden');
 		}, 5000)
 	}
-}
+	}
+});

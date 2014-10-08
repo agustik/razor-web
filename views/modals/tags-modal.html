@@ -9,9 +9,45 @@
 	  </div>
 	  <div class="form-group">
 	    <label for="rule">Rule</label>
-<textarea class="form-control" rows="15">
-{{ inputs.rule | json }}
-</textarea>
+ <div >
+  <div class="col-md-12">
+    
+    <div class="row" >
+      <div class="col-md-4">
+        <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
+        </select>
+      </div>
+      <div class="col-md-4">
+          <div class="input-group">
+            <ui-select ng-model="selected.fact" theme="bootstrap">
+              <ui-select-match placeholder="Select or search a Puppet Fact in the list...">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices repeat="item in available.facts | filter: $select.search">
+                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                <small ><strong>example:</strong> </small>
+                <small ng-bind-html="item.example | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+
+            <span class="input-group-btn">
+              <button ng-click="selected.fact = undefined " class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>
+
+          </div>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" ng-model="tag[2]"/>
+      </div>
+    </div> <!-- row ends ..-->
+    </div>
+    <div class="col-md-12">
+
+<pre>
+{{ tag | json }}
+</pre>
+    </div>
+    </div>
 	  </div>
 	</form>
 </div>

@@ -22,19 +22,12 @@
 </head>
 
 <body>
-  <div class="container" ng-controller="TagsCreator">
-  <div clasS="col-md-12">
-    
-    <div class="row">
-        <div class="col-md-2">
-        <button class="btn">Add rule</button>
-      </div>
-    </div>
-  </div>
+  <div class="container">
+    <div  ng-controller="TagsCreator">
   <div class="col-md-12">
     
     <div class="row" >
-      <div class="col-md-3">
+      <div class="col-md-4">
         <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
         </select>
       </div>
@@ -57,7 +50,7 @@
 
           </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <input class="form-control" ng-model="tag[2]"/>
       </div>
     </div> <!-- row ends ..-->
@@ -67,11 +60,7 @@
 {{ tag | json }}
       </pre>
     </div>
-
-  <button ng-click="addHtml()">blerg</button>
-  <div ng-repeat="html in lines"  ng-bind-html-unsafe="CreateHtml()">
-
-  </div>
+    </div>
   </div>
 
 

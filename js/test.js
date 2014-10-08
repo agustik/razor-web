@@ -1,36 +1,20 @@
 var application = angular.module('test', ['ngRoute', 'ui.bootstrap','ui.select','ngSanitize']);
 
-application.controller('TagsCreator', function ($scope){
+application.controller('TagsCreator', function ($scope, $sce){
 
 	$scope.available = {};
 	$scope.selected = {
 		fact : ''
 	};
 
-	$scope.tag = ['',[],''];
+	$scope.tag = ['=',[],''];
 
 	$scope.$watch('selected.fact', function (a, b){
 		if(typeof $scope.selected.fact == 'object'){
 			$scope.tag[1] = ['fact',$scope.selected.fact.name];
+			$scope.tag[2] = $scope.selected.fact.example;
 		}
 	});
-
-	$scope.lines = [];
-
-	$scope.snippet =
-          '<p style="color:blue">an html\n' +
-          '<em onmouseover="this.textContent=\'PWN3D!\'">click here</em>\n' +
-          'snippet</p>';
-    $scope.addHtml = function (){
-    	$scope.lines.push($scope.snippets);
-    	console.log($scope.lines);
-    }
-
-     $scope.CreateHtml = function() {
-     		
-          return $scope.snippet;
-      };
-
 	$scope.available = {
 		facts : [
 		{ name:	"hardwareisa", example: "x86_64" },
