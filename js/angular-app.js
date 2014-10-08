@@ -133,6 +133,9 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	      var action = available_commands[header][selected];
 	      delete selectedItem.header;
 	      delete selectedItem.selected;
+	      if (selectedItem['max-count']){
+	      	selectedItem['max-count'] = parseInt(selectedItem['max-count']);
+	      }
 	      $scope.selected = selectedItem;
 
 
