@@ -148,7 +148,7 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 });
 
 
-application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInstance, inputs) {
+application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $modalInstance, inputs) {
   $scope.availableTags = [];
  	$scope.available = {};
 	$scope.selected = {
@@ -224,7 +224,7 @@ application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInsta
   $scope.inputs.header = 'Create';
 
   console.log('Inputs: ',inputs);
-  if(inputs.action ) {
+  if(inputs.action) {
   	
   	$http.get(config.server + '/api/collections/' + inputs.action.selected + '/' + inputs.action.name).success(function (data){
   		if(data.iso_url) {
@@ -254,6 +254,8 @@ application.controller('ModalInstanceCtrl', function ($http, $scope, $modalInsta
   		//$scope.inputs.repo = 
 
   	});
+  }else{
+  	$scope.inputs['root-password'] = tools.passwordgen(16);
   }
     switch (inputs.selected){
     	case 'policies' : 
@@ -350,16 +352,28 @@ application.config(function ($routeProvider) {
 application.service('tools', function (){
 	return {
 		notify : function (msg, css){
-		angular
-			.element(document.querySelector('#notify'))
-			.removeClass('hidden alert-info alert-danger')
-			.addClass(css)
-			.text(msg);
-		setTimeout(function () {
 			angular
 				.element(document.querySelector('#notify'))
-				.addClass('hidden');
-		}, 5000)
-	}
+				.removeClass('hidden alert-info alert-danger')
+				.addClass(css)
+				.text(msg);
+			setTimeout(function () {
+				angular
+					.element(document.querySelector('#notify'))
+					.addClass('hidden');
+			}, 5000)
+		},
+		passwordgen : function (length) {
+			var password ="";
+			var x, i=0, chars = "abcdefghijklmnoqrstzxABCDEFGHIJKLMNOQRSTZX123456789";
+
+			while (i<length){
+				x = Math.floor((Math.random() * chars.length) + 1);
+				password+=chars.charAt(x);
+				i++;
+			}
+
+			return password;
+		}
 	}
 });

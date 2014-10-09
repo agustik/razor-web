@@ -72,3 +72,17 @@ application.controller('TagsCreator', function ($scope, $sce){
 	};
 
 });
+
+
+function passwordgen(length) {
+	var password ="";
+	var x, i=0, chars = "abcdefghijklmnoqrstzxABCDEFGHIJKLMNOQRSTZX123456789";
+
+	while (i<length){
+		x = Math.floor((Math.random() * chars.length) + 1);
+		password+=chars.charAt(x);
+		i++;
+	}
+
+	return password;
+}
