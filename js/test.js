@@ -7,12 +7,19 @@ application.controller('TagsCreator', function ($scope, $sce){
 		fact : ''
 	};
 
-	$scope.tag = ['=',[],''];
+	var template = ['=',[],''];
+
+
+	$scope.tags = [];
+	$scope.tags.push(template);
+
+
+
 
 	$scope.$watch('selected.fact', function (a, b){
 		if(typeof $scope.selected.fact == 'object'){
-			$scope.tag[1] = ['fact',$scope.selected.fact.name];
-			$scope.tag[2] = $scope.selected.fact.example;
+			$scope.tags[0][1] = ['fact',$scope.selected.fact.name];
+			$scope.tags[0][2] = $scope.selected.fact.example;
 		}
 	});
 	$scope.available = {

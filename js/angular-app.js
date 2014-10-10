@@ -18,7 +18,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	//console.log($scope);
 	tools.notify($routeParams.name, 'alert-info');
 
-
+	
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
 		angular.forEach(result.items, function (value, key){

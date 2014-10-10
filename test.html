@@ -28,7 +28,7 @@
     
     <div class="row" >
       <div class="col-md-4">
-        <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
+        <select  class="form-control" ng-model="tags[0][0]" ng-options="selector for selector in available.selector">
         </select>
       </div>
       <div class="col-md-4">
@@ -51,13 +51,13 @@
           </div>
       </div>
       <div class="col-md-4">
-        <input class="form-control" ng-model="tag[2]"/>
+        <input class="form-control" ng-model="tags[0][2]"/>
       </div>
     </div> <!-- row ends ..-->
     </div>
     <div class="col-md-12">
       <pre>
-{{ tag | json }}
+{{ tags | json }}
       </pre>
     </div>
     </div>
