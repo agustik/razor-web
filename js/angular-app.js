@@ -121,10 +121,13 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 
 	    var available_commands = {
 	    	Create : {
-	    		policies : 'create-policy'
+	    		policies : 'create-policy',
+	    		tags : 'create-tag',
+	    		broker : 'create-broker',
+	    		repo : 'create-repo',
+	    		task : 'create-task'
 	    	},
 	    	Update : {
-	    		policies : 'update-policy'
 
 	    	}
 	    } 
