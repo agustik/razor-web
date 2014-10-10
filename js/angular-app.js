@@ -10,15 +10,11 @@ application.controller('logs', function ($scope, $routeParams, $http) {
 
 
 application.config(function(uiSelectConfig) {
-  uiSelectConfig.theme = 'select2';
+  uiSelectConfig.theme = 'bootstrap';
 });
 
 application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams) {
 	$scope.data=[];
-	//console.log($scope);
-	tools.notify($routeParams.name, 'alert-info');
-
-
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
 		angular.forEach(result.items, function (value, key){
