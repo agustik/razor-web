@@ -11,9 +11,10 @@
 				<th>Repo name</th>
 				<th>Tags</th>
 				<th>Task name</th>
+				<th></th>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="policie in data track by $index"  data-ng-Dblclick="open('lg', 'policies', policie.name)"> 
+				<tr data-ng-repeat="policie in data track by $index"> 
 					<td>{{ policie.name }} </td>
 					<td>{{ policie.enabled }} </td>
 					<td>{{ policie.max_count }} </td>
@@ -21,6 +22,7 @@
 					<td>{{ policie.repo.name }} </td>
 					<td><span class="label label-primary" data-ng-repeat="tag in policie.tags"> {{ tag.name }} </span> </td>
 					<td>{{ policie.task.name }} </td>
+					<td><button class="btn btn-danger" ng-click="delete('delete-policy', repo.name)"  tooltip-placement="top" tooltip="Delete"><i class="fa fa-recycle"></button></td>
 				</tr>
 			</tbody>
 		</table>

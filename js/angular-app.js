@@ -95,6 +95,10 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 		action : false
 	};
 
+	$scope.delete = function (collection, name){
+		console.log(collection, name);
+	}
+
 	  $scope.open = function (size, selected, name) {
 
 	    var modalInstance = $modal.open({
