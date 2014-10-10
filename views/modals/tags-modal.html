@@ -5,49 +5,34 @@
     <form role="form">
 	  <div class="form-group">
 	    <label for="name">Name </label>
-	    <input type="text" data-ng-model="inputs.name" class="form-control" id="name" placeholder="Name of the tag" required>
+	    <input type="text" data-ng-model="inputs.name" class="form-control" id="name" placeholder="Name of the tag" >
 	  </div>
 	  <div class="form-group">
-	    <label for="rule">Rule</label>
- <div >
-  <div class="col-md-12">
-    
-    <div class="row" >
-      <div class="col-md-4">
-        <select  class="form-control" ng-model="tag[0]" ng-options="selector for selector in available.selector">
-        </select>
-      </div>
-      <div class="col-md-4">
-          <div class="input-group">
-            <ui-select ng-model="selected.fact" theme="bootstrap">
-              <ui-select-match placeholder="Select or search a Puppet Fact in the list...">{{$select.selected.name}}</ui-select-match>
-              <ui-select-choices repeat="item in available.facts | filter: $select.search">
-                <span ng-bind-html="item.name | highlight: $select.search"></span>
-                <small ><strong>example:</strong> </small>
-                <small ng-bind-html="item.example | highlight: $select.search"></small>
-              </ui-select-choices>
-            </ui-select>
-
-            <span class="input-group-btn">
-              <button ng-click="selected.fact = undefined " class="btn btn-default">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </span>
-
-          </div>
-      </div>
-      <div class="col-md-4">
-        <input class="form-control" ng-model="tag[2]"/>
-      </div>
-    </div> <!-- row ends ..-->
-    </div>
-    <div class="col-md-12">
-
-<textarea class="form-control" col="8" ng-model="inputs.rule">
-{{ tag | json }}
-</textarea>
-    </div>
-    </div>
+	    <label for="rule">Rule</label> 
+	    <div class="row">
+	    	<div class="col-sm-2">
+	     		<button class="btn btn-primary btn-xs" ng-click="addArray()">Add</button>
+	     		<button class="btn btn-danger btn-xs" ng-click="Clear()">Clear</button>
+	    	</div>
+	     <div class="col-md-2">
+	     	<select ng-hide="nr==0" class="form-control input-sm" ng-model="selected.operator" ng-options="item.name for item in available.operators "></select>
+	     </div>
+	     <div class="col-md-2">
+	     	<select class="form-control input-sm" ng-model="selected.fact" ng-options="item.name for item in available.facts "></select>
+	     </div>
+	     <div class="col-md-2">
+	    		<select class="form-control input-sm" ng-model="selected.selector" ng-options="item.name for item in available.selector"></select>
+	    	</div>
+	     <div class="col-md-4">
+	     	<input class="form-control input-sm" type="text" placeholder="" ng-model="selected.variable">
+	     	
+	     </div>
+	    </div>
+	    <div class="form-group">  	
+<pre >
+{{ inputs.rule | json }}
+</pre>
+	    </div>
 	  </div>
 	</form>
 </div>

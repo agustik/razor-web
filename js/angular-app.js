@@ -153,86 +153,158 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 });
 
 
-application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $modalInstance, inputs) {
+application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $modalInstance, inputs, $filter) {
   $scope.availableTags = [];
  	$scope.available = {};
 	$scope.selected = {
-		fact : ''
+		fact : '',
+		selector : '',
+		variable : ''
 	};
 
-	$scope.tag = ['=',[],''];
 
-	$scope.$watch('selected.fact', function (a, b){
-		if(typeof $scope.selected.fact == 'object'){
-			$scope.tag[1] = ['fact',$scope.selected.fact.name];
-			$scope.tag[2] = $scope.selected.fact.example;
-		}
-	});
-
-	$scope.$watch('tag', function (a,b){
-		console.log($scope.tag);
-		$scope.inputs.rule = $scope.tag;
-	});
 	$scope.available = {
+		operators : [
+		 { name : 'or' },
+		 { name : 'and' }
+		],
 		facts : [
-		{ name:	"hardwareisa", example: "x86_64" },
-		{ name:	"macaddress", example: "00:50:56:91:67:97" },
-		{ name:	"architecture", example: "x86_64" },
-		{ name:	"hardwaremodel", example: "x86_64" },
-		{ name:	"processor0", example: "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz" },
-		{ name:	"processorcount", example: "1" },
-		{ name:	"interfaces", example: "ens32,lo" },
-		{ name:	"ipaddress_ens32", example: "192.168.100.203" },
-		{ name:	"macaddress_ens32", example: "00:50:56:91:67:97" },
-		{ name:	"netmask_ens32", example: "255.255.255.0" },
-		{ name:	"ipaddress_lo", example: "127.0.0.1" },
-		{ name:	"netmask_lo", example: "255.0.0.0" },
-		{ name:	"memorysize_mb", example: "2003.00" },
-		{ name:	"memoryfree_mb", example: "1906.64" },
-		{ name:	"facterversion", example: "2.0.1" },
-		{ name:	"ipaddress", example: "192.168.1.0" },
-		{ name:	"virtual", example: "vmware" },
-		{ name:	"is_virtual", example: "true" },
-		{ name:	"uniqueid", example: "007f0100" },
-		{ name:	"blockdevice_sda_size", example: 17179869184 },
-		{ name:	"blockdevice_sda_vendor", example: "VMware" },
-		{ name:	"blockdevice_sda_model", example: "Virtual disk" },
-		{ name:	"blockdevice_sr0_size", example: 1073741312 },
-		{ name:	"blockdevice_sr0_vendor", example: "NECVMWar" },
-		{ name:	"blockdevice_sr0_model", example: "VMware IDE CDR10" },
-		{ name:	"blockdevices", example: "sda,sr0" },
-		{ name:	"physicalprocessorcount", example: "1" },
-		{ name:	"network_ens32", example: "192.168.1.0" },
-		{ name:	"network_lo", example: "127.0.0.0" },
-		{ name:	"boardmanufacturer", example: "Intel Corporation" },
-		{ name:	"boardproductname", example: "440BX Desktop Reference Platform" },
-		{ name:	"boardserialnumber", example: "None" },
-		{ name:	"bios_vendor", example: "Phoenix Technologies LTD" },
-		{ name:	"bios_version", example: "6.00" },
-		{ name:	"bios_release_date", example: "06/22/2012" },
-		{ name:	"manufacturer", example: "VMware, Inc." },
-		{ name:	"productname", example: "VMware Virtual Platform" },
-		{ name:	"serialnumber", example: "VMware-42 11 b0 da bd d7 7f 77-c6 10 df 9d 87 bf 28 16" },
-		{ name:	"uuid", example: "4211B0DA-BDD7-7F77-C610-DF9D87BF2816" },
-		{ name:	"type", example: "Other" },
-		{ name:	"netmask", example: "255.255.255.0" }
+		{ name:	"hardwareisa", example: "x86_64" , num: false },
+		{ name:	"macaddress", example: "00:50:56:91:67:97" , num: false },
+		{ name:	"architecture", example: "x86_64" , num: false },
+		{ name:	"hardwaremodel", example: "x86_64" , num: false },
+		{ name:	"processor0", example: "Intel(R) Xeon(R) CPU           E5335  @ 2.00GHz" , num: false },
+		{ name:	"processorcount", example: "1" , num: true },
+		{ name:	"interfaces", example: "ens32,lo" , num: false },
+		{ name:	"ipaddress_ens32", example: "192.168.100.203" , num: false },
+		{ name:	"macaddress_ens32", example: "00:50:56:91:67:97" , num: false },
+		{ name:	"netmask_ens32", example: "255.255.255.0" , num: false },
+		{ name:	"ipaddress_lo", example: "127.0.0.1" , num: false },
+		{ name:	"netmask_lo", example: "255.0.0.0" , num: false },
+		{ name:	"memorysize_mb", example: "2003.00" , num: true },
+		{ name:	"memoryfree_mb", example: "1906.64" , num: true },
+		{ name:	"facterversion", example: "2.0.1" , num: false },
+		{ name:	"ipaddress", example: "192.168.1.0" , num: false },
+		{ name:	"virtual", example: "vmware" , num: false },
+		{ name:	"is_virtual", example: "true" , num: false },
+		{ name:	"uniqueid", example: "007f0100" , num: false },
+		{ name:	"blockdevice_sda_size", example: 17179869184 , num: false },
+		{ name:	"blockdevice_sda_vendor", example: "VMware" , num: false },
+		{ name:	"blockdevice_sda_model", example: "Virtual disk" , num: false },
+		{ name:	"blockdevice_sr0_size", example: 1073741312 , num: false },
+		{ name:	"blockdevice_sr0_vendor", example: "NECVMWar" , num: false },
+		{ name:	"blockdevice_sr0_model", example: "VMware IDE CDR10" , num: false },
+		{ name:	"blockdevices", example: "sda,sr0" , num: false },
+		{ name:	"physicalprocessorcount", example: "1" , num: true },
+		{ name:	"network_ens32", example: "192.168.1.0" , num: false },
+		{ name:	"network_lo", example: "127.0.0.0" , num: false },
+		{ name:	"boardmanufacturer", example: "Intel Corporation" , num: false },
+		{ name:	"boardproductname", example: "440BX Desktop Reference Platform" , num: false },
+		{ name:	"boardserialnumber", example: "None" , num: false },
+		{ name:	"bios_vendor", example: "Phoenix Technologies LTD" , num: false },
+		{ name:	"bios_version", example: "6.00" , num: false },
+		{ name:	"bios_release_date", example: "06/22/2012" , num: false },
+		{ name:	"manufacturer", example: "VMware, Inc." , num: false },
+		{ name:	"productname", example: "VMware Virtual Platform" , num: false },
+		{ name:	"serialnumber", example: "VMware-42 11 b0 da bd d7 7f 77-c6 10 df 9d 87 bf 28 16" , num: false },
+		{ name:	"uuid", example: "4211B0DA-BDD7-7F77-C610-DF9D87BF2816" , num: false },
+		{ name:	"type", example: "Other" , num: false },
+		{ name:	"netmask", example: "255.255.255.0" , num: false  }
 		],
 		selector : [
-			'=' ,
-			'!=' ,
-			'in' ,
-			'num' ,
-			'<' ,
-			'>' ,
-			'>=' ,
-			'<='
+			{ name : '=', type : 'string' } ,
+			{ name : '!=', type : 'string' } ,
+			{ name : 'in', type : 'array' } ,
+			{ name : 'num', type : 'num' } ,
+			{ name : '<', type : 'num' } ,
+			{ name : '>', type : 'num' } ,
+			{ name : '>=', type : 'num' } ,
+			{ name : '<=', type : 'num' }
 		]
 	};
+
+
+
+
+	$scope.selected.fact = $scope.available.facts[0];
+	$scope.selected.selector = $scope.available.selector[0];
+	$scope.selected.operator = $scope.available.operators[0];
   // $scope.multipleDemo = {};
   // $scope.multipleDemo.colors = ['Blue','Red'];
+  // \ json
+
+  $scope.$watch('selected.fact', function (a,b){
+  	console.log(a,b);
+  	$scope.selected.variable = a.example;
+  });
+
+
   console.log(inputs);
   $scope.inputs = inputs;
   $scope.inputs.header = 'Create';
+
+  	function CreateArr(obj){
+  		if(obj){
+  			console.log(obj.variable);
+  			console.log(typeof obj.variable, parseInt(obj.variable));
+  			if (typeof obj.variable == 'number'){
+  				console.log('Number');
+  				obj.variable = parseInt(obj.variable);
+  			}else if(obj.selector.name == "in"){
+  				console.log('split');
+	  			if(obj.variable.indexOf(',') !== -1){
+	  				obj.variable=obj.variable.split(',');
+	  			}else if(obj.variable.indexOf(';') !==-1){
+	  				obj.variable=obj.variable.split(';');
+	  			}
+
+	  			console.log(obj);
+  			}
+  			console.log(obj.variable);
+  			return [obj.selector.name, ['fact', obj.fact.name], obj.variable];
+  		}else{
+  			return ['=',['fact','macaddress'],''];
+  		}
+		
+	}
+
+
+	$scope.nr=0;
+	//$scope.$watch('inputs.rule.json', function (a,b){
+	//	console.log($scope.inputs.rule_json);
+//		$scope.inputs.rule = angular.fromJson($scope.inputs.rule_json);
+//	});
+
+	$scope.inputs.rule = [];
+
+	$scope.addArray = function (){
+
+		console.log($scope.nr, 'arr',$scope.selected);
+		var new_arr = CreateArr($scope.selected);
+		var tmp = angular.copy($scope.inputs.rule);
+		if($scope.nr == 0){		
+			console.log('zero');
+			$scope.inputs.rule = new_arr;
+		}else if($scope.nr == 1 ){
+			console.log('more ?');
+			$scope.inputs.rule = [];
+			$scope.inputs.rule.push($scope.selected.operator.name);
+			$scope.inputs.rule.push(tmp);
+			$scope.inputs.rule.push(new_arr);
+		}else{
+
+			$scope.inputs.rule.push(new_arr);
+		}
+		//$scope.inputs.rule_json = angular.toJson($scope.inputs.rule);
+		$scope.nr++;
+	}
+	$scope.Clear=function() {
+		$scope.nr=0;
+		$scope.selected.fact = $scope.available.facts[0];
+		$scope.selected.selector = $scope.available.selector[0];
+		$scope.selected.operator = $scope.available.operators[0];
+		$scope.inputs.rule=[];
+	}
 
     switch (inputs.selected){
     	case 'policies' : 
@@ -259,6 +331,12 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 		break;
   	}
   $scope.ok = function () {
+  	if(inputs.selected=='tags'){
+  		delete $scope.inputs.rule_json;
+  		console.log('we need to fix this', $scope.inputs.rule);
+  		
+
+  	}
     $modalInstance.close($scope.inputs);
   };
 
