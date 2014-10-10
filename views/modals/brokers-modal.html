@@ -9,8 +9,9 @@
 	  </div>
 	  <div class="form-group">
 	    <label for="broker">Type</label>
-	    <div ng-controller="GetAvailableBrokers">
-	    	<select class="form-control" ng-options="broker for broker in brokers" data-ng-model="inputs.brokers" required>
+	    
+	    	<select class="form-control" data-ng-model="inputs.brokers" >
+	    		<option>puppet-pe</option>
 	    	</select>
 	    </div>
 	  </div>
