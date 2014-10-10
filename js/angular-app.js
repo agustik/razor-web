@@ -13,9 +13,11 @@ application.config(function(uiSelectConfig) {
   uiSelectConfig.theme = 'select2';
 });
 
-application.controller('collection', function ( $interval, $scope, collections, commands, $interval, $http, $routeParams) {
+application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams) {
 	$scope.data=[];
 	//console.log($scope);
+	tools.notify($routeParams.name, 'alert-info');
+
 
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
@@ -256,6 +258,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   	});
   }else{
   	$scope.inputs['root-password'] = tools.passwordgen(16);
+  	$scope.inputs['max-count'] = 1;
   }
     switch (inputs.selected){
     	case 'policies' : 
@@ -285,6 +288,7 @@ application.service('commands', function ($http, $q, tools) {
 		exec : function (command, object) {
 			var data = angular.toJson(object);
 			
+			return ;
 			$http.post(config.server+'/api/commands/'+command, object).success(function(response){
 				if (response.result) {
 					tools.notify(response.result, 'alert-info');
