@@ -124,8 +124,9 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	    		policies : 'create-policy',
 	    		tags : 'create-tag',
 	    		broker : 'create-broker',
-	    		repo : 'create-repo',
+	    		repos : 'create-repo',
 	    		task : 'create-task'
+
 	    	},
 	    	Update : {
 
@@ -133,6 +134,7 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	    } 
 
 	    modalInstance.result.then(function (selectedItem) {
+	    	console.log(selectedItem);
 	      var selected = selectedItem.selected;
 	      var header  = selectedItem.header;
 	      var action = available_commands[header][selected];
