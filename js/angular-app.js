@@ -266,11 +266,19 @@ application.service('commands', function ($http, $q, tools) {
 			$http.post(config.server+'/api/commands/'+command, object).success(function(response){
 				if (response.result) {
 					console.log(response.result);
-					tools.notify(response.result, 'alert-info');
+					angular
+						.element(document.querySelector('#notify'))
+						.removeClass('hidden alert-success alert-danger')
+						.addClass('alert-success')
+						.text(response.result);
 				}
 			}).error(function (response){
 				if(response.error){
-					tools.notify(response.error, 'alert-danger');
+					angular
+						.element(document.querySelector('#notify'))
+						.removeClass('hidden alert-success alert-danger')
+						.addClass('alert-danger')
+						.text(response.error);
 				}
 			})
 		}
