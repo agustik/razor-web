@@ -95,8 +95,8 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 		action : false
 	};
 
-	$scope.delete = function (collection, name){
-		console.log(collection, name);
+	$scope.delete = function (command, name){
+		commands.exec(command, {name : name });
 	}
 
 	  $scope.open = function (size, selected, name) {
@@ -262,9 +262,10 @@ application.service('commands', function ($http, $q, tools) {
 		exec : function (command, object) {
 			var data = angular.toJson(object);
 			
-			return ;
+			//return ;
 			$http.post(config.server+'/api/commands/'+command, object).success(function(response){
 				if (response.result) {
+					console.log(response.result);
 					tools.notify(response.result, 'alert-info');
 				}
 			}).error(function (response){
