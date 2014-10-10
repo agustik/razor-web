@@ -228,44 +228,10 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   $scope.inputs = inputs;
   $scope.inputs.header = 'Create';
 
-  console.log('Inputs: ',inputs);
-  if(inputs.action) {
-  	
-  	$http.get(config.server + '/api/collections/' + inputs.action.selected + '/' + inputs.action.name).success(function (data){
-  		if(data.iso_url) {
-  			data['iso-url'] = data.iso_url;
-  		}
-
-  		if(data.spec){
-  			delete data.spec;
-  		}
-  		if(data.id){
-  			delete data.id;
-  		}
-  		if(inputs.selected == 'tags'){
-  			delete data.policies;
-  			delete data.nodes;
-  		}
-  		data['header'] = 'Update';
-  		if(data.tags){
-  			var tagsArr=[];
-  			angular.forEach(data.tags, function (value){
-  				tagsArr.push(value.name);
-  			});
-  			data.tags=tagsArr;
-  		}
-  		
-  		$scope.inputs = data;
-  		//$scope.inputs.repo = 
-
-  	});
-  }else{
-  	console.log(inputs.action);
-  	$scope.inputs['root-password'] = tools.passwordgen(16);
-  	$scope.inputs['max-count'] = 1;
-  }
     switch (inputs.selected){
     	case 'policies' : 
+    	$scope.inputs['root-password'] = tools.passwordgen(16);
+  		$scope.inputs['max-count'] = 1;
 		$http.get(config.server + '/api/collections/tags').success(function (res){
 			//console.log('TAGS:::',res.items);
 			angular.forEach(res.items, function (value, key){
