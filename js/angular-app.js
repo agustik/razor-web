@@ -170,8 +170,9 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 	});
 
 	$scope.$watch('tag', function (a,b){
+		console.log($scope.tag);
 		$scope.inputs.rule = $scope.tag;
-	});	
+	});
 	$scope.available = {
 		facts : [
 		{ name:	"hardwareisa", example: "x86_64" },
