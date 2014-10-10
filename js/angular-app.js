@@ -247,7 +247,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   		if(obj){
   			console.log(obj.variable);
   			console.log(typeof obj.variable, parseInt(obj.variable));
-  			if (typeof obj.variable == 'number'){
+  			if (typeof +obj.variable == 'number'){
   				console.log('Number');
   				obj.variable = parseInt(obj.variable);
   			}else if(obj.selector.name == "in"){
