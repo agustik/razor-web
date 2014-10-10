@@ -260,6 +260,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 
   	});
   }else{
+  	console.log(inputs.action);
   	$scope.inputs['root-password'] = tools.passwordgen(16);
   	$scope.inputs['max-count'] = 1;
   }
