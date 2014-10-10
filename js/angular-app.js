@@ -247,6 +247,15 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 
 		console.log($scope.selected);
 		break;
+		case 'brokers' : 
+			$scope.brokers = ['puppet-pe'];
+			$scope.inputs.configuration = {
+				server : '',
+				environment : ''
+			};
+
+			$scope.inputs.brokers = $scope.brokers[0];
+		break;
   	}
   $scope.ok = function () {
     $modalInstance.close($scope.inputs);

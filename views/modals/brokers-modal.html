@@ -9,8 +9,7 @@
 	  </div>
 	  <div class="form-group">
 	    <label for="broker">Type</label>
-	    	<select class="form-control" data-ng-model="inputs.brokers" >
-	    		<option>puppet-pe</option>
+	    	<select class="form-control" ng-options="broker for broker in inputs.brokers" data-ng-model="inputs.brokers" required>
 	    	</select>
 	  </div>
 	  <div class="form-group">
