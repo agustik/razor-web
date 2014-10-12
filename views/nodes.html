@@ -19,7 +19,7 @@
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="node in data | filter:filter.name | orderBy:'name'" > 
-			<td><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success'}[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check'}[node.state.stage]"></i></span>{{ node.name }} </td>
+			<td><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success', false : 'label labe-info' }[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check'}[node.state.stage]"></i></span>{{ node.name }} </td>
 			<td>{{ node.hostname }}</td>
 			<td>{{ node.facts.processorcount }}|{{ (node.facts.memorysize_mb)/1024 | number:0 }} Gb </td>
 			<td>{{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}} Gb</td>
