@@ -20,8 +20,6 @@
 	<tbody>
 		<tr data-ng-repeat="node in data | filter:filter.name | orderBy:'name'" > 
 			<td><span class="label label-info"><i class="fa fa-spinner fa-spin"></i></span>{{ node.name }} </td>
-		<tr data-ng-repeat="node in data | filter:filter.name | orderBy:'name'" ng-class="{'info': (!node.state.installed), 'success': true}" > 
-			<td>{{ node.name }} </td>
 			<td>{{ node.hostname }}</td>
 			<td>{{ node.facts.processorcount }}|{{ (node.facts.memorysize_mb)/1024 | number:0 }} Gb </td>
 			<td>{{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}} Gb</td>
