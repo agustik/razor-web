@@ -7,12 +7,19 @@ application.controller('TagsCreator', function ($scope, $sce){
 		fact : ''
 	};
 
-	$scope.tag = ['=',[],''];
+	var template = ['=',[],''];
+
+
+	$scope.tags = [];
+	$scope.tags.push(template);
+
+
+
 
 	$scope.$watch('selected.fact', function (a, b){
 		if(typeof $scope.selected.fact == 'object'){
-			$scope.tag[1] = ['fact',$scope.selected.fact.name];
-			$scope.tag[2] = $scope.selected.fact.example;
+			$scope.tags[0][1] = ['fact',$scope.selected.fact.name];
+			$scope.tags[0][2] = $scope.selected.fact.example;
 		}
 	});
 	$scope.available = {
@@ -72,3 +79,17 @@ application.controller('TagsCreator', function ($scope, $sce){
 	};
 
 });
+
+
+function passwordgen(length) {
+	var password ="";
+	var x, i=0, chars = "abcdefghijklmnoqrstzxABCDEFGHIJKLMNOQRSTZX123456789";
+
+	while (i<length){
+		x = Math.floor((Math.random() * chars.length) + 1);
+		password+=chars.charAt(x);
+		i++;
+	}
+
+	return password;
+}

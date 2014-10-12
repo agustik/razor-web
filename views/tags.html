@@ -8,13 +8,15 @@
 				<th>Nodes count</th>
 				<th>Policie Count</th>
 				<th>Rule</th>
+				<th></th>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="tag in data track by $index"  data-ng-Dblclick="open('lg', 'tags', tag.name)"> 
+				<tr data-ng-repeat="tag in data track by $index" > 
 					<td>{{ tag.name }} </td>
 					<td>{{ tag.nodes.count }} </td>
 					<td>{{ tag.policies.count }} </td>
 					<td>{{ tag.rule | json }} </td>
+					<td><button class="btn btn-danger btn-xs" ng-click="delete('delete-tag', tag.name)" tooltip-placement="top" tooltip="Delete"><i class="fa fa-recycle"></button></td>
 				</tr>
 			</tbody>
 		</table>
