@@ -236,33 +236,25 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   // \ json
 
   $scope.$watch('selected.fact', function (a,b){
-  	console.log(a,b);
   	$scope.selected.variable = a.example;
   });
 
-
-  console.log(inputs);
   $scope.inputs = inputs;
   $scope.inputs.header = 'Create';
 
   	function CreateArr(obj){
   		if(obj){
   			console.log(obj.variable);
-  			console.log(typeof obj.variable, parseInt(obj.variable));
-  			if (typeof +obj.variable == 'number'){
-  				console.log('Number');
-  				obj.variable = parseInt(obj.variable);
+  			var c = +obj.variable;
+  			if ( !isNaN(c)){
+  				obj.variable = c;
   			}else if(obj.selector.name == "in"){
-  				console.log('split');
 	  			if(obj.variable.indexOf(',') !== -1){
 	  				obj.variable=obj.variable.split(',');
 	  			}else if(obj.variable.indexOf(';') !==-1){
 	  				obj.variable=obj.variable.split(';');
 	  			}
-
-	  			console.log(obj);
   			}
-  			console.log(obj.variable);
   			return [obj.selector.name, ['fact', obj.fact.name], obj.variable];
   		}else{
   			return ['=',['fact','macaddress'],''];
