@@ -5,21 +5,21 @@
 
 <table class="table table-hover main-list">
 	<thead>
-		<th>Name</th>
-		<th>Hostname</th>
-		<th>Processors|memory</th>
-		<th>Disksize</th>
-		<th>Mac Address</th>
-		<th>Installed</th>
+		<th><a href="" ng-click="reverse=!reverse;order('name', reverse)">Name</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('hostname', reverse)">Hostname</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('facts.processorcount', reverse)">Processors|memory</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('facts.blockdevice_sda_size', reverse)">Disksize</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('facts.macaddress', reverse)">Mac Address</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('state.installed', reverse)">Installed</a></th>
 		<th>Tags</th>
-		<th>Virtual</th>
-		<th>Checkin</th>
+		<th><a href="" ng-click="reverse=!reverse;order('facts.is_virtual', reverse)">Virtual</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('unix', reverse)">Checkin</a></th>
 		<th>Logs</th>
 		<th></th>
 	</thead>
 	<tbody>
-		<tr data-ng-repeat="node in data | filter:filter.name | orderBy:'name'" > 
-			<td><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success', undefined : 'label label-warning' }[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check' , undefined : 'fa-question'}[node.state.stage]"></i></span><span> </span> {{ node.name }} </td>
+		<tr data-ng-repeat="node in data | filter:filter.name "> 
+			<td><a tooltip-placement="right" tooltip="{{node.state.stage}}"><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success', undefined : 'label label-warning' }[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check' , undefined : 'fa-question'}[node.state.stage]"></i></span><span> </span> </a>{{ node.name }} </td>
 			<td>{{ node.hostname }}</td>
 			<td>{{ node.facts.processorcount }}|{{ (node.facts.memorysize_mb)/1024 | number:0 }} Gb </td>
 			<td>{{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}} Gb</td>

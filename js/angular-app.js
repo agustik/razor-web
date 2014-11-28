@@ -1,11 +1,35 @@
 var application = angular.module('razor', ['ngRoute', 'ui.bootstrap','ui.select','ngSanitize']);
 
 
-application.controller('logs', function ($scope, $routeParams, $http) {
+application.controller('logs', function ($scope, $routeParams, $http, $interval) {
  //console.log($routeParams);	
  $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
- 	$scope.data = data.items;
+ 	var arr = [];
+ 	data.items.forEach(function (log, index){
+ 		log['unix'] = Date.parse(log.timestamp);
+ 		arr.push(log);
+ 	});
+ 	console.log(arr);
+ 	$scope.data = arr;
  });
+
+ $interval(function (){
+ 	 $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
+ 	 	var arr = [], diff=1;
+	 	data.items.forEach(function (log, index){
+	 		log['unix'] = Date.parse(log.timestamp);
+	 		arr.push(log);
+	 	});
+	 	console.log($scope.data.length, arr.length);
+	 	if($scope.data.length !== arr.length){
+		 	diff = arr.slice($scope.data.length, arr.length);
+		 	diff.forEach(function (value){
+		 		$scope.data.push(value);
+		 	});
+	 	}
+	 });	
+ },1000);
+
 });
 
 
@@ -13,8 +37,11 @@ application.config(function(uiSelectConfig) {
   uiSelectConfig.theme = 'bootstrap';
 });
 
-application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams) {
+application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams, $filter) {
 	$scope.data=[];
+	var orderBy = $filter('orderBy');
+	$scope.theorder = 'name';
+	$scope.reverse = false;
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
 		angular.forEach(result.items, function (value, key){
@@ -29,13 +56,106 @@ application.controller('collection', function (tools, $interval, $scope, collect
 				}
 				//console.log(data);
 				$scope.data.push(data);
+
 			});
 		});
 	});
+
+	var interval = (config.interval) ? config.interval : 5000;
+	$interval(function (){
+		collections.getData($routeParams.name).then(function (result){
+			var now = new Date().getTime();
+			//console.log(result);
+			var tmparr = [], index = false;
+			if(result.items.length >= $scope.data.length){
+				result.items.forEach(function (value, key){
+					$http.get(value.id).success(function (data){
+						if(data.last_checkin){
+							data['unix'] = Date.parse(data.last_checkin);
+							data['new'] = false;
+							if( (now - data.unix) < 60000 ){
+								data.new = true;
+							}
+						}
+						index = FindIndex('id',value.id, $scope.data);
+
+						if(index !== false){
+							if(HasChanged(data, $scope.data[index])){
+								$scope.data.splice(index, 1);
+								$scope.data.push(data);
+							}
+						}else{
+							$scope.data.push(data);
+						}
+
+						$scope.data = orderBy($scope.data, $scope.theorder, $scope.reverse);
+					});
+				});
+			}else{
+
+				// find the one deleted ..
+			}
+		});
+	}, interval);
+
+	$scope.order = function(predicate, reverse) {
+		$scope.theorder = predicate;
+		$scope.reverse = reverse;
+		$scope.data = orderBy($scope.data, predicate, reverse);
+	};
+
+	$scope.order($scope.theorder, $scope.reverse);
+
+
 	$scope.command = function (command,name){
 		commands.exec(command,name);
 	}		
 });
+
+
+function FindIndex(key, value,  arr){
+	var found = false, index = false;
+
+	arr.forEach(function (item, i){
+		if(item[key] == value){
+			found=true;
+			index = i;
+			return;
+		}
+	});
+
+	return index;
+}
+
+function HasChanged(newdata, olddata){
+	//console.log(newdata, olddata);
+	if(newdata['unix'] == olddata['unix']){
+		if('state' in newdata){
+			if('state' in olddata){
+				if('stage' in newdata.state){
+					if('stage' in olddata.state){
+						if(newdata.state.stage == olddata.state.stage){
+							return false;
+						}
+
+					}else{
+						return true;
+					}
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
+
+		}
+
+		//state.staged
+	}else{
+		return true;
+	}
+}
+
 
 application.service('collections', function ($http, $q){
     return{
