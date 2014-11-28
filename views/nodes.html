@@ -16,7 +16,7 @@
 		<th></th>
 	</thead>
 	<tbody>
-		<tr data-ng-repeat="node in data | filter:filter.name " ng-class="{'true':'success'}[node.new]"> 
+		<tr data-ng-repeat="(key, node) in data | filter:filter.name " ng-class="{'true':'success'}[node.new]"> 
 			<td><a tooltip-placement="right" tooltip="{{node.state.stage}}"><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success', undefined : 'label label-warning' }[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check' , undefined : 'fa-question'}[node.state.stage]"></i></span><span> </span> </a>{{ node.name }} </td>
 			<td>{{ node.hostname }} </td>
 			<td>{{ node.facts.processorcount }} | {{ (node.facts.memorysize_mb)/1024 | number:0 }} | {{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}}</td>
@@ -35,10 +35,10 @@
 			<td>{{ node.unix | date:"dd.MM.yyyy - HH:mm:ss"}} </td>
 			<td> 
 				<div class="btn-group">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="command('delete-node', { name : node.name})" tooltip-placement="top" tooltip="Delete node"><i class="fa fa-trash"></i></button>
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="command('reboot-node', { name : node.name})" tooltip-placement="top" tooltip="Reboot node"><i class="fa fa-refresh"></i></button>
+					<button type="button" class="btn btn-default btn-xs" data-ng-click="command('delete-node', { name : node.name},key)" tooltip-placement="top" tooltip="Delete node"><i class="fa fa-trash"></i></button>
+					<button type="button" class="btn btn-default btn-xs" data-ng-click="command('reboot-node', { name : node.name},key)" tooltip-placement="top" tooltip="Reboot node"><i class="fa fa-refresh"></i></button>
 					<a href="#/logs/{{node.name}}" type="button" class="btn btn-default btn-xs" tooltip-placement="top" tooltip="Logs"><i class="fa fa-list-alt"></i></a>
-					<button type="button" ng-if="node.state.installed != false" class="btn btn-default btn-xs" data-ng-click="command('reinstall-node', { name : node.name})" tooltip-placement="top" tooltip="Reinstall node"><i class="fa fa-recycle"></i></button>
+					<button type="button" ng-if="node.state.installed != false" class="btn btn-default btn-xs" data-ng-click="command('reinstall-node', { name : node.name},key)" tooltip-placement="top" tooltip="Reinstall node"><i class="fa fa-recycle"></i></button>
 				</div>
 			</td>
 		</tr>

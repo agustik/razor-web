@@ -10,13 +10,13 @@
 		<th></th>
 	</thead>
 	<tbody>
-		<tr data-ng-repeat="broker in data track by $index"> 
+		<tr data-ng-repeat="(key, broker) in data track by $index"> 
 			<td>{{ broker.name }} </td>
 			<td>{{ broker['broker-type'] }} </td>
 			<td>{{ broker.policies.count }} </td>
 			<td>{{ broker.configuration.environment }} </td>
 			<td>{{ broker.configuration.server }} </td>
-			<td><button class="btn btn-small  btn-xs" tooltip-placement="top" ng-click="delete('delete-broker', broker.name)"  tooltip="Delete"><i class="fa fa-recycle"></button></td>
+			<td><button class="btn btn-small  btn-xs" tooltip-placement="top" ng-click="delete('delete-broker', broker.name,key)"  tooltip="Delete"><i class="fa fa-recycle"></button></td>
 		</tr>
 	</tbody>
 </table>

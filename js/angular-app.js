@@ -147,7 +147,19 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	
 
 
-	$scope.command = function (command,name){
+	$scope.command = function (command,name, index){
+		console.log(command, name,index);
+		console.log(index);
+		if(command.match(/delete/) !== null){
+			if(command == 'delete-node' && index){
+				console.log('delete ? ');
+				$scope.data.splice(index, 1);
+			}
+		}
+
+		if(command == 'delete-node'){
+			$scope.data.splice(index, 1);
+		}
 		commands.exec(command,name);
 	}		
 });
@@ -527,8 +539,7 @@ application.service('commands', function ($http, $q, tools) {
 	return {
 		exec : function (command, object) {
 			var data = angular.toJson(object);
-			
-			//return ;
+
 			$http.post(config.server+'/api/commands/'+command, object).success(function(response){
 				if (response.result) {
 					console.log(response.result);
@@ -546,7 +557,7 @@ application.service('commands', function ($http, $q, tools) {
 						.addClass('alert-danger')
 						.text(response.error);
 				}
-			})
+			});
 		}
 	}
 });
