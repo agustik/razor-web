@@ -1,6 +1,24 @@
 var application = angular.module('razor', ['ngRoute', 'ui.bootstrap','ui.select','ngSanitize']);
 
 
+application.controller('dashboard', function ($scope, collections, $http){
+	$scope.count = {};
+	$scope.nodes = 0;
+	$http.get(config.server+'/api').success(function (data){
+		console.log(data.collections);
+		data.collections.forEach(function (col){
+			collections.getData(col.name).then(function (result){
+				$scope[col.name] = {
+					count: result.items.length
+				}
+			});
+		})
+	});
+});
+
+
+
+
 application.controller('logs', function ($scope, $routeParams, $http, $interval) {
  //console.log($routeParams);	
  $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
@@ -37,6 +55,24 @@ application.config(function(uiSelectConfig) {
   uiSelectConfig.theme = 'bootstrap';
 });
 
+
+function GetProgress(node){
+	if('state' in node){
+		if ('stage' in node.state){
+			if(node.state.installed !== false){
+				return 100;
+			}else if(node.state.stage == 'boot_local'){
+				return 90;
+			}else if(node.state.stage == 'boot_install'){
+				return 30;
+			}else if(node.state.stage == 'bootint'){
+				return 10;
+			}
+		}
+	}
+	return 0;
+}
+
 application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams, $filter) {
 	$scope.data=[];
 	var orderBy = $filter('orderBy');
@@ -52,13 +88,15 @@ application.controller('collection', function (tools, $interval, $scope, collect
 					if( (now - data.unix) < 60000 ){
 						data.new = true;
 					}
-					//if(data.unix - )
 				}
-				//console.log(data);
+				if($routeParams.name == 'nodes'){
+					data.percentage = GetProgress(data);
+				}
 				$scope.data.push(data);
 
 			});
 		});
+		$scope.order($scope.theorder, $scope.reverse);
 	});
 
 	var interval = (config.interval) ? config.interval : 5000;
@@ -81,6 +119,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 
 						if(index !== false){
 							if(HasChanged(data, $scope.data[index])){
+								data['new'] = false;
 								$scope.data.splice(index, 1);
 								$scope.data.push(data);
 							}
@@ -88,23 +127,24 @@ application.controller('collection', function (tools, $interval, $scope, collect
 							$scope.data.push(data);
 						}
 
-						$scope.data = orderBy($scope.data, $scope.theorder, $scope.reverse);
 					});
 				});
 			}else{
 
 				// find the one deleted ..
 			}
+		$scope.order($scope.theorder, $scope.reverse);
 		});
 	}, interval);
 
 	$scope.order = function(predicate, reverse) {
+		console.log(predicate, reverse);
 		$scope.theorder = predicate;
 		$scope.reverse = reverse;
 		$scope.data = orderBy($scope.data, predicate, reverse);
 	};
 
-	$scope.order($scope.theorder, $scope.reverse);
+	
 
 
 	$scope.command = function (command,name){
@@ -526,7 +566,8 @@ application.controller('GetAvailableTasks', function ($scope, $http) {
 application.config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			controller : ''
+			templateUrl : 'views/dashboard.html',
+			controller : 'dashboard'
 		})
 		.when('/:name', {
 			templateUrl : function (params) {
