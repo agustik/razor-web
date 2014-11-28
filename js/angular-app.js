@@ -168,21 +168,41 @@ function FindIndex(key, value,  arr){
 }
 
 function HasChanged(newdata, olddata){
-	//console.log(newdata, olddata);
+	var check = {
+		old : {
+			unix : olddata.unix,
+			state : olddata.state
+		},
+		new : {
+			unix : newdata.unix,
+			state : newdata.state
+		}
+	};
+
+	if(JSON.stringify(check.new) !== JSON.stringify(check.old)){
+		return true;
+	}else{
+		return false;
+	}
+
 	if(newdata['unix'] == olddata['unix']){
 		if('state' in newdata){
 			if('state' in olddata){
-				if('stage' in newdata.state){
-					if('stage' in olddata.state){
-						if(newdata.state.stage == olddata.state.stage){
-							return false;
-						}
-
-					}else{
-						return true;
-					}
+				if(olddata.state.installed !== newdata.state.installed){
+					return true;
 				}else{
-					return false;
+					if('stage' in newdata.state){
+						if('stage' in olddata.state){
+							if(newdata.state.stage == olddata.state.stage){
+								return false;
+							}
+
+						}else{
+							return true;
+						}
+					}else{
+						return false;
+					}
 				}
 			}else{
 				return true;
