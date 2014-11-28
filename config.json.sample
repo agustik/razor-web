@@ -1,0 +1,10 @@
+
+var config = {
+
+	/* Server url */	
+	server : 'http://YourServer.example.com',
+	
+	/* Interval of pulls */
+	interval : 5000 
+
+};
