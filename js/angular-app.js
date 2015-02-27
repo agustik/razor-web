@@ -437,7 +437,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   	function CreateArr(obj){
   		if(obj){
   			console.log(obj.variable);
-  			var c = +obj.variable;
+  			var c = obj.variable;
   			if ( !isNaN(c)){
   				obj.variable = c;
   			}else if(obj.selector.name == "in"){
