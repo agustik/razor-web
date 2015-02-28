@@ -452,7 +452,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   				return [obj.selector.name, ['num',['fact', obj.fact.name] ], obj.variable];
   			}
 
-
+  			console.log(obj.selector.name);
   			return [obj.selector.name, ['fact', obj.fact.name], obj.variable];
   		}else{
   			return ['=',['fact','macaddress'],''];
