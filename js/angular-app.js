@@ -450,7 +450,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 	  			}
   			}
 
-  			if(obj.selector.name.indexOf(nums) !== -1){
+  			if(nums.indexOf(obj.selector.name) !== -1){
   				return [obj.selector.name, ['num',['fact', obj.fact.name] ], obj.variable];
   			}
 
