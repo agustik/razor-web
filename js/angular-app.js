@@ -476,10 +476,11 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 		console.log($scope.selected);
 		break;
 		case 'brokers' : 
-			$scope.brokers = ['puppet', 'puppet-pe'];
+			
 			$scope.inputs.configuration = {
 				server : '',
-				environment : ''
+				environment : '',
+				brokers : ['puppet', 'puppet-pe']
 			};
 
 			$scope.inputs.brokers = $scope.brokers[0];
