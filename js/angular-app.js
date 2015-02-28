@@ -448,7 +448,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 	  			}else if(obj.variable.indexOf(';') !==-1){
 	  				obj.variable=obj.variable.split(';');
 	  			}
-  			}else if(obj.selector.name.indexOf(nums); !== -1){
+  			}else if(obj.selector.name.indexOf(nums) !== -1){
   				return [obj.selector.name, ['num',['fact', obj.fact.name] ], obj.variable];
   			}
 
