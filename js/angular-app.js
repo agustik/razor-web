@@ -481,8 +481,6 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 			// 	server : '',
 			// 	environment : ''
 			// };
-
-			$scope.inputs['broker-type'] = $scope.['broker-type'][0];
 		break;
 		case 'tags':
 			$scope.inputs.rule = [];
