@@ -315,7 +315,7 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	    	Create : {
 	    		policies : 'create-policy',
 	    		tags : 'create-tag',
-	    		broker : 'create-broker',
+	    		brokers : 'create-broker',
 	    		repos : 'create-repo',
 	    		task : 'create-task'
 
