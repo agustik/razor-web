@@ -483,7 +483,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 				brokers : ['puppet', 'puppet-pe']
 			};
 
-			$scope.inputs.configuration.brokers = $scope.configuration.brokers[0];
+			//$scope.inputs.configuration.brokers = $scope.configuration.brokers[0];
 		break;
 		case 'tags':
 			$scope.inputs.rule = [];
