@@ -437,6 +437,8 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   	function CreateArr(obj){
   		if(obj){
   			console.log(obj.variable);
+
+  			var nums = ['<','>','<=', '>='];
   			var c = obj.variable;
   			if ( !isNaN(c)){
   				obj.variable = c;
@@ -446,7 +448,11 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 	  			}else if(obj.variable.indexOf(';') !==-1){
 	  				obj.variable=obj.variable.split(';');
 	  			}
+  			}else if(obj.selector.name.indexOf(nums); !== -1){
+  				return [obj.selector.name, ['num',['fact', obj.fact.name] ], obj.variable];
   			}
+
+
   			return [obj.selector.name, ['fact', obj.fact.name], obj.variable];
   		}else{
   			return ['=',['fact','macaddress'],''];
@@ -468,7 +474,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 		console.log($scope.selected);
 		break;
 		case 'brokers' : 
-			$scope.brokers = ['puppet-pe'];
+			$scope.brokers = ['puppet', 'puppet-pe'];
 			$scope.inputs.configuration = {
 				server : '',
 				environment : ''
