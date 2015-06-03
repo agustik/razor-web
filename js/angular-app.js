@@ -92,11 +92,11 @@ application.controller('collection', function (tools, $interval, $scope, collect
 				if($routeParams.name == 'nodes'){
 					data.percentage = GetProgress(data);
 				}
+				$scope.order($scope.theorder, $scope.reverse);
 				$scope.data.push(data);
 
 			});
 		});
-		$scope.order($scope.theorder, $scope.reverse);
 	});
 
 	var interval = (config.interval) ? config.interval : 5000;
@@ -137,8 +137,9 @@ application.controller('collection', function (tools, $interval, $scope, collect
 		});
 	}, interval);
 
+
+
 	$scope.order = function(predicate, reverse) {
-		console.log(predicate, reverse);
 		$scope.theorder = predicate;
 		$scope.reverse = reverse;
 		$scope.data = orderBy($scope.data, predicate, reverse);
@@ -436,7 +437,6 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 
   	function CreateArr(obj){
   		if(obj){
-  			console.log(obj.variable);
 
   			var nums = ['<','>','<=', '>='];
   			var c = +obj.variable;
@@ -454,7 +454,6 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   				return [obj.selector.name, ['num',['fact', obj.fact.name] ], obj.variable];
   			}
 
-  			console.log(obj.selector.name);
   			return [obj.selector.name, ['fact', obj.fact.name], obj.variable];
   		}else{
   			return ['=',['fact','macaddress'],''];
@@ -472,8 +471,6 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 				$scope.availableTags.push(value.name);
 			});
 		});
-
-		console.log($scope.selected);
 		break;
 		case 'brokers' : 
 			$scope.brokers = ['puppet', 'puppet-pe'];
@@ -498,8 +495,6 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 	
 
 	$scope.addArray = function (){
-
-		console.log($scope.nr, 'arr',$scope.selected);
 		var new_arr = CreateArr($scope.selected);
 		var tmp = angular.copy($scope.inputs.rule);
 		if($scope.nr == 0){		
