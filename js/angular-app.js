@@ -78,6 +78,8 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	var orderBy = $filter('orderBy');
 	$scope.theorder = 'name';
 	$scope.reverse = false;
+
+
 	collections.getData($routeParams.name).then(function (result){
 		var now = new Date().getTime();
 		angular.forEach(result.items, function (value, key){
@@ -85,6 +87,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 				if(data.last_checkin){
 					data['unix'] = Date.parse(data.last_checkin);
 					data['new'] = false;
+					data['passwordhidden'] = true;
 					if( (now - data.unix) < 60000 ){
 						data.new = true;
 					}
@@ -99,6 +102,30 @@ application.controller('collection', function (tools, $interval, $scope, collect
 		});
 	});
 
+
+	$scope.passwordlength=(config.passwordlength) ? config.passwordlength: 16;
+
+	$scope.showPassword= function(node){
+		angular.forEach($scope.data, function (value, key){
+			if (value.name == node.name){
+				console.log('found?', value.name, $scope.data[key]);
+				$scope.data[key].passwordhidden=false;
+				setTimeout(function (){
+					$scope.hidePassword(key);
+				},10000)
+			}
+		});
+		console.log(node.name);
+	}
+	$scope.getNumber = function(num) {
+		return new Array(num); 
+	}
+
+	$scope.hidePassword = function(key){
+		$scope.data[key].passwordhidden=true;
+	}
+
+	console.log($scope.passwordlength);
 	var interval = (config.interval) ? config.interval : 5000;
 	$interval(function (){
 		collections.getData($routeParams.name).then(function (result){

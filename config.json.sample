@@ -4,6 +4,7 @@ var config = {
 	server : 'http://YourServer.example.com',
 	
 	/* Interval of pulls */
-	interval : 5000 
+	interval : 5000,
 
+	passwordlength:16
 };

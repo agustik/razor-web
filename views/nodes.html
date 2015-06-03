@@ -7,19 +7,20 @@
 	<thead>
 		<th><a href="" ng-click="reverse=!reverse;order('name', reverse)">Name</a></th>
 		<th><a href="" ng-click="reverse=!reverse;order('hostname', reverse)">Hostname</a></th>
-		<th><a href="" ng-click="reverse=!reverse;order('facts.processorcount', reverse)">P</a> | <a href="" ng-click="reverse=!reverse;order('facts.memorysize_mb', reverse)">M</a> | <a href="" ng-click="reverse=!reverse;order('facts.blockdevice_sda_size', reverse)">D</a></th>
+		<th><a href="" ng-click="reverse=!reverse;order('facts.processorcount', reverse)">Processor</a> | <a href="" ng-click="reverse=!reverse;order('facts.memorysize_mb', reverse)">Memory</a> | <a href="" ng-click="reverse=!reverse;order('facts.blockdevice_sda_size', reverse)">Disk</a></th>
 		<th><a href="" ng-click="reverse=!reverse;order('facts.macaddress', reverse)">Mac Address</a></th>
 		<th><a href="" ng-click="reverse=!reverse;order('state.installed', reverse)">Status</a></th>
 		<th>Tags</th>
 		<th><a href="" ng-click="reverse=!reverse;order('facts.is_virtual', reverse)">Virtual</a></th>
 		<th><a href="" ng-click="reverse=!reverse;order('unix', reverse)">Checkin</a></th>
+		<th>Password</th>
 		<th></th>
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="(key, node) in data | filter:filter.name " ng-class="{'true':'success'}[node.new]"> 
 			<td><a tooltip-placement="right" tooltip="{{node.state.stage}}"><span ng-class="{'boot_install': 'label label-info', 'boot_local' : 'label label-success', undefined : 'label label-warning' }[node.state.stage]"><i class="fa " ng-class="{'boot_install' : 'fa-spinner fa-spin', 'boot_local':'fa-check' , undefined : 'fa-question'}[node.state.stage]"></i></span><span> </span> </a>{{ node.name }} </td>
 			<td>{{ node.hostname }} </td>
-			<td>{{ node.facts.processorcount }} | {{ (node.facts.memorysize_mb)/1024 | number:1 }} Gb | {{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}}</td>
+			<td>{{ node.facts.processorcount }} CPU | {{ (node.facts.memorysize_mb)/1024 | number:1 }} Gb | {{ (node.facts.blockdevice_sda_size)/1024/1024/1024 | number:0}} GB</td>
 			<td><span  tooltip-placement="top" tooltip="{{ node.facts.ipaddress }}">{{ node.facts.macaddress }} </span></td>
 			<td class="">
 			<span ng-if="node.state.installed == false" >
@@ -33,6 +34,7 @@
 			<td><span  data-ng-repeat="tag in node.tags"><span class="label label-primary"> {{ tag.name }} </span> </span> </td>
 			<td>{{ node.facts.is_virtual }} </td>
 			<td>{{ node.unix | date:"dd.MM.yyyy - HH:mm:ss"}} </td>
+			<td><span ng-dblclick="showPassword(node)" class="label" ng-class="(node.passwordhidden) ? 'label-success' : 'label-danger'"><span ng-show="node.passwordhidden" class="fa fa-asterisk" ng-repeat="i in getNumber(passwordlength) track by $index"></span><span ng-hide="node.passwordhidden">{{ node.root_password }}</span></span></td>
 			<td> 
 				<div class="btn-group">
 					<button type="button" class="btn btn-default btn-xs" data-ng-click="command('delete-node', { name : node.name},key)" tooltip-placement="top" tooltip="Delete node"><i class="fa fa-trash"></i></button>
