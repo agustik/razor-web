@@ -62,9 +62,9 @@ function GetProgress(node){
 			if(node.state.installed !== false){
 				return 100;
 			}else if(node.state.stage == 'boot_local'){
-				return 90;
+				return 85;
 			}else if(node.state.stage == 'boot_install'){
-				return 30;
+				return 20;
 			}else if(node.state.stage == 'bootint'){
 				return 10;
 			}
@@ -79,29 +79,95 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	$scope.theorder = 'name';
 	$scope.reverse = false;
 
+	$scope.interval = (config.interval) ? config.interval : 5000;
 
-	collections.getData($routeParams.name).then(function (result){
-		var now = new Date().getTime();
-		angular.forEach(result.items, function (value, key){
-			$http.get(value.id).success(function(data){
-				if(data.last_checkin){
-					data['unix'] = Date.parse(data.last_checkin);
-					data['new'] = false;
-					data['passwordhidden'] = true;
-					if( (now - data.unix) < 60000 ){
-						data.new = true;
-					}
-				}
-				if($routeParams.name == 'nodes'){
-					data.percentage = GetProgress(data);
-				}
-				$scope.order($scope.theorder, $scope.reverse);
-				$scope.data.push(data);
+	$scope.node_status = {};
+	$scope.watching = {
+		array : [],
+		collection : false
+	}; 
 
+	$scope.InitData = function (){
+		collections.getData($routeParams.name).then(function (result){
+			angular.forEach(result.items, function (value, key){
+				if($scope.watching.array.indexOf(value.name) == -1){
+					$scope.watcher($routeParams.name, value);
+				}
 			});
+			setTimeout(function (){
+				$scope.InitData();
+			}, $scope.interval);
 		});
-	});
+	}
 
+	$scope.InitData();
+
+
+	var ajax = {
+
+	};
+
+	$scope.watcher = function (collection, obj){
+		var name = obj.name;
+		var now = new Date().getTime();
+
+		if($scope.watching.collection == collection){
+			$scope.watching.array = [];
+		}
+		if(ajax[name] == true){
+			return;
+		}
+
+
+		ajax[name] = true;
+		$http.get(obj.id).success(function(resp){
+
+			resp.hash = JSON.stringify(resp).hashCode();
+
+
+			resp.parent=obj;
+			if(resp.last_checkin){
+				resp['unix'] = Date.parse(resp.last_checkin);
+				resp['new'] = false;
+				
+				if( (now - resp.unix) < 60000 ){
+					resp.new = true;
+				}
+			}
+			if($routeParams.name == 'nodes'){
+				resp['passwordhidden'] = true;
+				
+			}
+
+
+			$scope.order($scope.theorder, $scope.reverse);
+			
+			if($scope.watching.array.indexOf(resp.name) == -1){
+				//console.log(resp.name);
+				$scope.node_status[resp.name] = GetProgress(resp);
+				$scope.data.push(resp);
+				$scope.watching.array.push(resp.name);
+			}else{
+				if($scope.node_status[resp.name] > 10 && $scope.node_status[resp.name] < 98 ){
+					$scope.node_status[resp.name]++;
+				}
+				var x = FindIndex('name', resp.name, $scope.data);
+
+				//var change = HasChanged(resp, $scope.data[x]);
+
+				//if(change){
+				if(resp.hash !== $scope.data[x].hash){
+					$scope.data.splice(x,1);
+					$scope.data.push(resp);
+					
+				}
+			}
+			ajax[name] = false;
+			setTimeout(function(){
+				$scope.watcher(collection, resp.parent);
+			}, $scope.interval);
+		});
+	};
 
 	$scope.passwordlength=(config.passwordlength) ? config.passwordlength: 16;
 
@@ -115,7 +181,6 @@ application.controller('collection', function (tools, $interval, $scope, collect
 				},10000)
 			}
 		});
-		console.log(node.name);
 	}
 	$scope.getNumber = function(num) {
 		return new Array(num); 
@@ -125,45 +190,6 @@ application.controller('collection', function (tools, $interval, $scope, collect
 		$scope.data[key].passwordhidden=true;
 	}
 
-	console.log($scope.passwordlength);
-	var interval = (config.interval) ? config.interval : 5000;
-	$interval(function (){
-		collections.getData($routeParams.name).then(function (result){
-			var now = new Date().getTime();
-			//console.log(result);
-			var tmparr = [], index = false;
-			if(result.items.length >= $scope.data.length){
-				result.items.forEach(function (value, key){
-					$http.get(value.id).success(function (data){
-						if(data.last_checkin){
-							data['unix'] = Date.parse(data.last_checkin);
-							data['new'] = false;
-							if( (now - data.unix) < 60000 ){
-								data.new = true;
-							}
-						}
-						index = FindIndex('id',value.id, $scope.data);
-
-						if(index !== false){
-							if(HasChanged(data, $scope.data[index])){
-								data['new'] = false;
-								$scope.data.splice(index, 1);
-								$scope.data.push(data);
-							}
-						}else{
-							$scope.data.push(data);
-						}
-
-					});
-				});
-			}else{
-
-				// find the one deleted ..
-			}
-		$scope.order($scope.theorder, $scope.reverse);
-		});
-	}, interval);
-
 
 
 	$scope.order = function(predicate, reverse) {
@@ -172,19 +198,13 @@ application.controller('collection', function (tools, $interval, $scope, collect
 		$scope.data = orderBy($scope.data, predicate, reverse);
 	};
 
-	
-
-
 	$scope.command = function (command,name, index){
-		console.log(command, name,index);
-		console.log(index);
 		if(command.match(/delete/) !== null){
 			if(command == 'delete-node' && index){
 				console.log('delete ? ');
 				$scope.data.splice(index, 1);
 			}
 		}
-
 		if(command == 'delete-node'){
 			$scope.data.splice(index, 1);
 		}
@@ -207,53 +227,40 @@ function FindIndex(key, value,  arr){
 	return index;
 }
 
-function HasChanged(newdata, olddata){
-	var check = {
-		old : {
-			unix : olddata.unix,
-			state : olddata.state
-		},
-		new : {
-			unix : newdata.unix,
-			state : newdata.state
-		}
-	};
+function HasChanged(newData, oldData){
+	// if(newData == undefined || !('last_checkin' in newData) || !('last_checkin' in newData) || !('state' in newData) || !('state' in newData)){
+	// 	return false;
+	// }else if(!('stage' in newData.state) || !('stage' in newData.state) || !('installed' in newData.state) || !('installed' in newData.state)){
+	// 	return false;
+	// }
+	// if(newData.state.installed == oldData.state.installed){
+	// 	return false;
+	// }else if(newData.state.stage == oldData.state.stage){
+	// 	return false;
+	// }else if ( newData.last_checkin == oldData.last_checkin){
+	// 	return false;
+	// }else{
+	// 	return true;
+	// }
 
-	if(JSON.stringify(check.new) !== JSON.stringify(check.old)){
-		return true;
-	}else{
+	var obj = {
+		a : {},
+		b : {}
+	};
+	if( !('state' in newData)){
 		return false;
 	}
+	obj.a['time'] = newData.last_checkin;
+	obj.a['state'] = newData.state;
 
-	if(newdata['unix'] == olddata['unix']){
-		if('state' in newdata){
-			if('state' in olddata){
-				if(olddata.state.installed !== newdata.state.installed){
-					return true;
-				}else{
-					if('stage' in newdata.state){
-						if('stage' in olddata.state){
-							if(newdata.state.stage == olddata.state.stage){
-								return false;
-							}
-
-						}else{
-							return true;
-						}
-					}else{
-						return false;
-					}
-				}
-			}else{
-				return true;
-			}
-
-		}
-
-		//state.staged
+	obj.b['time'] = oldData.last_checkin;
+	obj.b['state'] = oldData.state;
+	if(JSON.stringify(obj.a) == JSON.stringify(obj.b)){
+		return false;
 	}else{
 		return true;
 	}
+
 }
 
 
@@ -672,3 +679,19 @@ application.service('tools', function (){
 		}
 	}
 });
+
+
+
+String.prototype.hashCode = function(){
+    if (Array.prototype.reduce){
+        return this.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+    } 
+    var hash = 0;
+    if (this.length === 0) return hash;
+    for (var i = 0; i < this.length; i++) {
+        var character  = this.charCodeAt(i);
+        hash  = ((hash<<5)-hash)+character;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+}
