@@ -1,10 +1,15 @@
 var config = {
 
-	/* Server url */	
+	/* Server url */
 	server : 'http://YourServer.example.com',
-	
+
 	/* Interval of pulls */
 	interval : 5000,
 
-	passwordlength:16
+	passwordlength:16,
+
+	user : 'root',
+
+	/* How to connect to nodes, ip or dns*/
+	node_connection : 'ip'
 };

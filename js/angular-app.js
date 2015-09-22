@@ -1,6 +1,15 @@
 var application = angular.module('razor', ['ngRoute', 'ui.bootstrap','ui.select','ngSanitize']);
 
 
+application.config( [
+    '$compileProvider',
+    function( $compileProvider )
+    {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(ssh|https?|ftp|mailto|chrome-extension):/);
+        // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
+    }
+]);
+
 application.controller('dashboard', function ($scope, collections, $http){
 	$scope.count = {};
 	$scope.nodes = 0;
@@ -20,7 +29,7 @@ application.controller('dashboard', function ($scope, collections, $http){
 
 
 application.controller('logs', function ($scope, $routeParams, $http, $interval) {
- //console.log($routeParams);	
+ //console.log($routeParams);
  $http.get(config.server + '/api/collections/nodes/'+$routeParams.node+'/log').success(function (data){
  	var arr = [];
  	data.items.forEach(function (log, index){
@@ -45,7 +54,7 @@ application.controller('logs', function ($scope, $routeParams, $http, $interval)
 		 		$scope.data.push(value);
 		 	});
 	 	}
-	 });	
+	 });
  },1000);
 
 });
@@ -75,6 +84,9 @@ function GetProgress(node){
 
 application.controller('collection', function (tools, $interval, $scope, collections, commands, $interval, $http, $routeParams, $filter) {
 	$scope.data=[];
+
+	$scope.node_connection = config.node_connection || 'ip';
+
 	var orderBy = $filter('orderBy');
 	$scope.theorder = 'name';
 	$scope.reverse = false;
@@ -85,7 +97,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	$scope.watching = {
 		array : [],
 		collection : false
-	}; 
+	};
 
 	$scope.InitData = function (){
 		collections.getData($routeParams.name).then(function (result){
@@ -129,19 +141,25 @@ application.controller('collection', function (tools, $interval, $scope, collect
 			if(resp.last_checkin){
 				resp['unix'] = Date.parse(resp.last_checkin);
 				resp['new'] = false;
-				
+
 				if( (now - resp.unix) < 60000 ){
 					resp.new = true;
 				}
 			}
 			if($routeParams.name == 'nodes'){
 				resp['passwordhidden'] = true;
-				
+
 			}
 
 
 			$scope.order($scope.theorder, $scope.reverse);
-			
+			if ($scope.node_connection == 'dns'){
+				resp.connection_address = resp.hostname;
+			}else{
+				resp.connection_address = resp.facts.ipaddress;
+			}
+
+
 			if($scope.watching.array.indexOf(resp.name) == -1){
 				//console.log(resp.name);
 				$scope.node_status[resp.name] = GetProgress(resp);
@@ -159,7 +177,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 				if(resp.hash !== $scope.data[x].hash){
 					$scope.data.splice(x,1);
 					$scope.data.push(resp);
-					
+
 				}
 			}
 			ajax[name] = false;
@@ -170,6 +188,8 @@ application.controller('collection', function (tools, $interval, $scope, collect
 	};
 
 	$scope.passwordlength=(config.passwordlength) ? config.passwordlength: 16;
+
+	$scope.connection_user = config.user || 'root';
 
 	$scope.showPassword= function(node){
 		angular.forEach($scope.data, function (value, key){
@@ -183,7 +203,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 		});
 	}
 	$scope.getNumber = function(num) {
-		return new Array(num); 
+		return new Array(num);
 	}
 
 	$scope.hidePassword = function(key){
@@ -209,7 +229,7 @@ application.controller('collection', function (tools, $interval, $scope, collect
 			$scope.data.splice(index, 1);
 		}
 		commands.exec(command,name);
-	}		
+	}
 });
 
 
@@ -268,11 +288,11 @@ application.service('collections', function ($http, $q){
     return{
       getData: function(collection){
         var deferred = $q.defer();
- 
+
         $http.get(config.server+'/api/collections/'+collection).success(function(data){
           deferred.resolve(data);
       	}).error(function(){
- 
+
         deferred.reject("An error occured while fetching items");
       });
  		//console.log(deferred.promise);
@@ -314,7 +334,7 @@ application.filter('propsFilter', function() {
 
 
 application.controller('EditModal', function ($scope, $modal, $log, commands) {
-	$scope.inputs = { 
+	$scope.inputs = {
 		action : false
 	};
 
@@ -335,13 +355,13 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	        		$scope.inputs.selected = selected;
 	        		$scope.inputs.action = { name : name, selected : selected };
 	        	}else{
-	        		
+
 	        		$scope.inputs={};
 	        		$scope.inputs.selected = selected;
 	        	}
-	        	
+
 	        	return $scope.inputs;
-	        	
+
 	        }
 	      }
 	    });
@@ -358,7 +378,7 @@ application.controller('EditModal', function ($scope, $modal, $log, commands) {
 	    	Update : {
 
 	    	}
-	    } 
+	    }
 
 	    modalInstance.result.then(function (selectedItem) {
 	    	console.log(selectedItem);
@@ -492,10 +512,10 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   		}else{
   			return ['=',['fact','macaddress'],''];
   		}
-		
+
 	}
     switch (inputs.selected){
-    	case 'policies' : 
+    	case 'policies' :
     	$scope.inputs['root-password'] = tools.passwordgen(16);
   		$scope.inputs['max-count'] = 1;
 		$http.get(config.server + '/api/collections/tags').success(function (res){
@@ -506,7 +526,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 			});
 		});
 		break;
-		case 'brokers' : 
+		case 'brokers' :
 			$scope.brokers = ['puppet', 'puppet-pe'];
 			// $scope.inputs.configuration = {
 			// 	server : '',
@@ -526,12 +546,12 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
 //		$scope.inputs.rule = angular.fromJson($scope.inputs.rule_json);
 //	});
 
-	
+
 
 	$scope.addArray = function (){
 		var new_arr = CreateArr($scope.selected);
 		var tmp = angular.copy($scope.inputs.rule);
-		if($scope.nr == 0){		
+		if($scope.nr == 0){
 			console.log('zero');
 			$scope.inputs.rule = new_arr;
 		}else if($scope.nr == 1 ){
@@ -560,7 +580,7 @@ application.controller('ModalInstanceCtrl', function (tools, $http, $scope, $mod
   	if(inputs.selected=='tags'){
   		delete $scope.inputs.rule_json;
   		console.log('we need to fix this', $scope.inputs.rule);
-  		
+
 
   	}
     $modalInstance.close($scope.inputs);
@@ -684,8 +704,8 @@ application.service('tools', function (){
 
 String.prototype.hashCode = function(){
     if (Array.prototype.reduce){
-        return this.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
-    } 
+        return this.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    }
     var hash = 0;
     if (this.length === 0) return hash;
     for (var i = 0; i < this.length; i++) {
